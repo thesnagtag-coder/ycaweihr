@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeLife — Injury &amp; Post-Surgery Recovery at Home · PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════ THEME ENGINE ═══════════ */
+:root {
+  --navy:#0D1B2A; --navy-mid:#1A2F45;
+  --critical:#DC2626; --high:#EA580C; --medium:#D97706; --low:#16A34A;
+  --radius:12px;
+  --shadow:0 2px 12px rgba(13,27,42,0.08);
+  --shadow-lg:0 8px 32px rgba(13,27,42,0.14);
+}
+body[data-theme="injury"] { --accent:#6E8CA0; --accent-dark:#56708D; --accent-rgb:110,140,160; }
+body[data-theme="teal"]   { --accent:#14B8A6; --accent-dark:#0D9488; --accent-rgb:20,184,166; }
+body[data-theme="amber"]  { --accent:#F59E0B; --accent-dark:#D97706; --accent-rgb:245,158,11; }
+body[data-theme="rose"]   { --accent:#E11D48; --accent-dark:#BE123C; --accent-rgb:225,29,72; }
+body[data-theme="violet"] { --accent:#7C3AED; --accent-dark:#6D28D9; --accent-rgb:124,58,237; }
+body[data-theme="ocean"]  { --accent:#2563EB; --accent-dark:#1D4ED8; --accent-rgb:37,99,235; }
+body[data-theme="forest"] { --accent:#16A34A; --accent-dark:#15803D; --accent-rgb:22,163,74; }
+body[data-mode="light"] {
+  --bg:#F9F6F0; --surface:#FFFFFF; --surface-2:#EDE6D6; --tile:#F9F6F0;
+  --ink:#0D1B2A; --ink-mid:#3A4A5C; --ink-soft:#6B7A8D; --line:#EDE6D6;
+  --critical-bg:#FEF2F2; --high-bg:#FFF7ED; --medium-bg:#FFFBEB; --low-bg:#F0FDF4;
+}
+body[data-mode="dark"] {
+  --bg:#0B1420; --surface:#13202F; --surface-2:#1C2C3E; --tile:#0F1A28;
+  --ink:#EDF2F7; --ink-mid:#B7C4D1; --ink-soft:#8194A7; --line:#243549;
+  --critical-bg:rgba(220,38,38,.16); --high-bg:rgba(234,88,12,.16);
+  --medium-bg:rgba(217,119,6,.16); --low-bg:rgba(22,163,74,.16);
+  --shadow:0 2px 12px rgba(0,0,0,0.35); --shadow-lg:0 8px 32px rgba(0,0,0,0.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s;}
+
+/* ═══════════ TOP BAR ═══════════ */
+.topbar{background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 20px;min-height:58px;position:relative;z-index:300;border-bottom:2px solid var(--accent);flex-wrap:wrap;}
+.topbar-brand{display:flex;align-items:center;gap:12px;}
+.topbar-logo{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;font-family:'Sora',sans-serif;color:#fff;box-shadow:0 2px 8px rgba(var(--accent-rgb),.4);}
+.topbar-name{font-family:'Sora',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.3px;}
+.topbar-name span{color:var(--accent);}
+.topbar-tagline{font-size:11px;color:rgba(255,255,255,.5);font-style:italic;}
+.topbar-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.progress-pill{background:rgba(var(--accent-rgb),.15);border:1px solid rgba(var(--accent-rgb),.3);border-radius:20px;padding:4px 14px;font-size:12px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.progress-pill span{color:#fff;font-size:13px;}
+.toolbar{display:flex;gap:6px;flex-wrap:wrap;}
+.tool-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;display:flex;align-items:center;gap:5px;transition:all .2s;position:relative;}
+.tool-btn:hover{background:rgba(var(--accent-rgb),.3);border-color:var(--accent);}
+.tool-btn .tb-label{font-size:11px;}
+@media(max-width:820px){.tool-btn .tb-label{display:none;}.topbar-tagline{display:none;}}
+
+/* ═══════════ DROPDOWN PANELS ═══════════ */
+.dropdown{position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-lg);padding:10px;display:none;z-index:400;min-width:190px;}
+.dropdown.open{display:block;}
+.dropdown-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--ink-soft);padding:4px 8px 8px;}
+.theme-row{display:flex;align-items:center;gap:10px;width:100%;padding:8px;border:none;background:none;border-radius:8px;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--ink);text-align:left;}
+.theme-row:hover{background:rgba(var(--accent-rgb),.08);}
+.theme-row.selected{background:rgba(var(--accent-rgb),.12);}
+.theme-swatch{width:18px;height:18px;border-radius:6px;flex-shrink:0;}
+.theme-row .check-mark{margin-left:auto;color:var(--accent);font-weight:800;}
+
+/* ═══════════ HERO ═══════════ */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 60%,#3a2703 100%);padding:48px 32px 40px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(var(--accent-rgb),.14) 0%,transparent 60%);}
+.hero-emoji{font-size:64px;line-height:1;margin-bottom:12px;display:block;position:relative;}
+.hero-title{font-family:'Sora',sans-serif;font-size:32px;font-weight:800;color:#fff;margin-bottom:6px;position:relative;}
+.hero-subtitle{font-size:15px;color:rgba(255,255,255,.65);margin-bottom:20px;position:relative;}
+.hero-badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;position:relative;}
+.hero-badge{background:rgba(var(--accent-rgb),.15);border:1px solid rgba(var(--accent-rgb),.35);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:5px;cursor:pointer;transition:background .2s,transform .15s;user-select:none;}
+.hero-badge:hover{background:rgba(var(--accent-rgb),.28);transform:translateY(-1px);}
+
+/* ═══════════ PROGRESS ═══════════ */
+.progress-section{background:var(--surface);border-bottom:1px solid var(--line);padding:0 32px;height:46px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:290;box-shadow:0 2px 8px rgba(13,27,42,.06);}
+.progress-label{font-size:12px;font-weight:600;color:var(--ink-soft);white-space:nowrap;}
+.progress-track{flex:1;height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-dark));border-radius:4px;width:0%;transition:width .4s ease;}
+.progress-count{font-size:13px;font-weight:700;color:var(--accent);white-space:nowrap;}
+.celebrate{display:none;background:linear-gradient(135deg,rgba(var(--accent-rgb),.15),rgba(var(--accent-rgb),.05));border-bottom:1px solid rgba(var(--accent-rgb),.3);padding:14px 32px;text-align:center;font-weight:700;color:var(--accent-dark);font-size:15px;font-family:'Sora',sans-serif;}
+.celebrate.show{display:block;}
+
+/* ═══════════ SEARCH ═══════════ */
+.search-wrap{padding:20px 20px 0;max-width:860px;margin:0 auto;}
+.search-box{width:100%;padding:10px 16px 10px 40px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:14px;font-family:'Inter',sans-serif;color:var(--ink);outline:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7A8D' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center;transition:border-color .2s;}
+.search-box:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.1);}
+.search-no-results{text-align:center;padding:40px;color:var(--ink-soft);font-size:14px;display:none;}
+
+/* ═══════════ ZONE TABS ═══════════ */
+.zone-tabs{background:var(--surface);border-bottom:2px solid var(--line);display:flex;overflow-x:auto;padding:0 24px;gap:4px;scrollbar-width:none;position:sticky;top:46px;z-index:200;}
+.zone-tabs::-webkit-scrollbar{display:none;}
+.zone-tab{display:flex;align-items:center;gap:7px;padding:14px 18px;border:none;background:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--ink-soft);white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;margin-bottom:-2px;}
+.zone-tab:hover{color:var(--accent);background:rgba(var(--accent-rgb),.05);}
+.zone-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.zone-tab-count{background:var(--surface-2);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;color:var(--ink-soft);}
+.zone-tab.active .zone-tab-count{background:rgba(var(--accent-rgb),.15);color:var(--accent);}
+
+/* ═══════════ MAIN / STATS ═══════════ */
+.main{max-width:860px;margin:0 auto;padding:28px 20px 60px;}
+.stats-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
+.stat-pill{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;user-select:none;}
+.stat-pill:hover{border-color:var(--accent);}
+.stat-pill.filter-on{border-color:var(--accent);background:rgba(var(--accent-rgb),.08);box-shadow:0 0 0 2px rgba(var(--accent-rgb),.15);}
+.stat-dot{width:8px;height:8px;border-radius:50%;}
+.stat-dot.critical{background:var(--critical);}.stat-dot.high{background:var(--high);}.stat-dot.medium{background:var(--medium);}.stat-dot.low{background:var(--low);}
+.stat-count{font-size:15px;font-weight:700;}
+.risk-legend{display:flex;gap:12px;flex-wrap:wrap;margin-left:auto;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--ink-soft);}
+.legend-dot{width:8px;height:8px;border-radius:3px;}
+
+/* ═══════════ ZONE PANEL ═══════════ */
+.zone-panel{display:none;}
+.zone-panel.active{display:block;}
+.zone-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding:20px 24px;background:var(--surface);border-radius:var(--radius);border:1px solid rgba(var(--accent-rgb),.2);box-shadow:var(--shadow);}
+.zone-icon{width:52px;height:52px;background:linear-gradient(135deg,rgba(var(--accent-rgb),.12),rgba(var(--accent-rgb),.06));border:2px solid rgba(var(--accent-rgb),.25);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.zone-header-text h2{font-family:'Sora',sans-serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.zone-header-text p{font-size:13px;color:var(--ink-soft);}
+
+/* ═══════════ CHECK CARDS ═══════════ */
+.checks-list{display:flex;flex-direction:column;gap:10px;}
+.check-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .2s;}
+.check-card:hover{box-shadow:var(--shadow-lg);}
+.check-card.completed{border-color:rgba(var(--accent-rgb),.3);background:rgba(var(--accent-rgb),.03);}
+.check-header{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none;}
+.check-checkbox{width:22px;height:22px;min-width:22px;border:2px solid var(--surface-2);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:13px;background:var(--surface);}
+.check-card.completed .check-checkbox{background:var(--accent);border-color:var(--accent);color:#fff;}
+.check-num{font-size:10px;font-weight:700;color:var(--ink-soft);min-width:30px;font-family:'Sora',sans-serif;}
+.check-risk{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;}
+.risk-critical{background:var(--critical-bg);color:var(--critical);}
+.risk-high{background:var(--high-bg);color:var(--high);}
+.risk-medium{background:var(--medium-bg);color:var(--medium);}
+.risk-low{background:var(--low-bg);color:var(--low);}
+.check-title{flex:1;font-size:14px;font-weight:600;color:var(--ink);line-height:1.4;}
+.check-card.completed .check-title{color:var(--ink-soft);text-decoration:line-through;}
+.check-chevron{font-size:12px;color:var(--ink-soft);transition:transform .25s;min-width:16px;}
+.check-card.open .check-chevron{transform:rotate(180deg);}
+.check-detail{display:none;padding:0 18px 18px 18px;border-top:1px solid var(--line);}
+.check-card.open .check-detail{display:block;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+@media(max-width:600px){.detail-grid{grid-template-columns:1fr;}}
+.detail-item{background:var(--tile);border-radius:8px;padding:11px 13px;}
+.detail-item.full{grid-column:1/-1;}
+.detail-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--accent-dark);margin-bottom:4px;display:flex;align-items:center;gap:5px;}
+body[data-mode="dark"] .detail-label{color:var(--accent);}
+.detail-value{font-size:13px;color:var(--ink);line-height:1.55;}
+.tip-box{margin-top:12px;background:linear-gradient(135deg,rgba(var(--accent-rgb),.08),rgba(var(--accent-rgb),.04));border:1px solid rgba(var(--accent-rgb),.25);border-left:4px solid var(--accent);border-radius:8px;padding:11px 14px;display:flex;gap:10px;align-items:flex-start;}
+.tip-icon{font-size:16px;line-height:1;margin-top:1px;}
+.tip-text{font-size:13px;color:var(--ink);line-height:1.55;}
+.tip-text strong{color:var(--accent-dark);font-weight:700;}
+body[data-mode="dark"] .tip-text strong{color:var(--accent);}
+.measurement-box{margin-top:10px;background:rgba(var(--accent-rgb),.05);border:1px solid var(--line);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--ink-mid);line-height:1.5;font-family:'Sora',sans-serif;}
+.measurement-box strong{color:var(--ink);font-size:11px;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:3px;}
+
+/* ═══════════ ZONE ACTIONS ═══════════ */
+.zone-actions{display:flex;justify-content:flex-end;gap:10px;margin:14px 0 18px;flex-wrap:wrap;}
+.btn{padding:9px 18px;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;}
+.btn-outline{background:var(--surface);border:1px solid var(--line);color:var(--ink-mid);}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;box-shadow:0 2px 8px rgba(var(--accent-rgb),.3);}
+.btn-primary:hover{box-shadow:0 4px 16px rgba(var(--accent-rgb),.4);transform:translateY(-1px);}
+
+/* ═══════════ MODALS ═══════════ */
+.modal-overlay{position:fixed;inset:0;background:rgba(13,27,42,.6);z-index:500;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;backdrop-filter:blur(3px);}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border-radius:16px;max-width:640px;width:100%;box-shadow:var(--shadow-lg);border-top:4px solid var(--accent);}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--line);}
+.modal-head h3{font-family:'Sora',sans-serif;font-size:18px;color:var(--ink);display:flex;align-items:center;gap:8px;}
+.modal-close{background:none;border:none;font-size:22px;color:var(--ink-soft);cursor:pointer;line-height:1;padding:4px;}
+.modal-close:hover{color:var(--accent);}
+.modal-body{padding:20px 24px 26px;color:var(--ink-mid);font-size:13.5px;}
+.modal-body h4{font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:16px 0 6px;display:flex;align-items:center;gap:6px;}
+.modal-body h4:first-child{margin-top:0;}
+.modal-body p{margin-bottom:8px;}
+.modal-body table{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0;}
+.modal-body th{text-align:left;padding:7px 10px;background:rgba(var(--accent-rgb),.1);color:var(--ink);font-size:11px;text-transform:uppercase;letter-spacing:.5px;}
+.modal-body td{padding:7px 10px;border-bottom:1px solid var(--line);color:var(--ink-mid);}
+.modal-body td strong{color:var(--ink);}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;padding:0 24px 22px;flex-wrap:wrap;}
+.rule-list{list-style:none;margin:6px 0;}
+.rule-list li{padding:6px 0 6px 26px;position:relative;border-bottom:1px dashed var(--line);}
+.rule-list li::before{content:'✓';position:absolute;left:2px;color:var(--accent);font-weight:800;}
+
+/* ═══════════ COLLECTION / UPSELL ═══════════ */
+.collection{max-width:860px;margin:0 auto;padding:10px 20px 50px;}
+.collection h3{font-family:'Sora',sans-serif;font-size:18px;color:var(--ink);margin-bottom:4px;}
+.collection>p{font-size:13px;color:var(--ink-soft);margin-bottom:16px;}
+.collection-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;}
+.module-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:4px;transition:all .2s;}
+.module-card:hover{border-color:var(--accent);box-shadow:var(--shadow);}
+.module-card .m-emoji{font-size:26px;}
+.module-card .m-name{font-family:'Sora',sans-serif;font-weight:700;font-size:13.5px;color:var(--ink);}
+.module-card .m-age{font-size:11.5px;color:var(--ink-soft);}
+.module-tag{margin-top:6px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-radius:6px;padding:3px 8px;align-self:flex-start;}
+.module-tag.owned{background:rgba(var(--accent-rgb),.15);color:var(--accent-dark);}
+body[data-mode="dark"] .module-tag.owned{color:var(--accent);}
+.module-tag.addon{background:var(--surface-2);color:var(--ink-soft);}
+.module-tag.coming{background:transparent;color:var(--ink-soft);border:1px dashed var(--line);}
+
+/* ═══════════ FOOTER ═══════════ */
+.footer{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:24px;font-size:12px;line-height:1.8;}
+.footer strong{color:rgba(255,255,255,.8);}
+
+/* ═══════════ TRADEMARK ICON SET ═══════════ */
+.zic svg{width:16px;height:16px;vertical-align:-3px;}
+.zone-tab .zic svg{color:inherit;}
+.topbar-logo svg{width:22px;height:22px;color:#fff;}
+.hero-emoji svg{width:72px;height:72px;color:var(--accent);filter:drop-shadow(0 4px 14px rgba(var(--accent-rgb),.45));}
+.zone-icon svg{width:27px;height:27px;color:var(--accent-dark);}
+body[data-mode="dark"] .zone-icon svg{color:var(--accent);}
+.module-card .m-emoji svg{width:30px;height:30px;color:var(--accent-dark);}
+body[data-mode="dark"] .module-card .m-emoji svg{color:var(--accent);}
+
+/* ═══════════ FLOATING NAV / DISCLAIMERS ═══════════ */
+html{scroll-behavior:smooth;}
+.float-nav{position:fixed;right:16px;bottom:20px;display:flex;flex-direction:column;gap:8px;z-index:250;}
+html[dir="rtl"] .float-nav{right:auto;left:16px;}
+.float-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--accent-dark);font-size:18px;font-weight:800;cursor:pointer;box-shadow:var(--shadow-lg);transition:all .2s;}
+.float-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:translateY(-2px);}
+body[data-mode="dark"] .float-btn{color:var(--accent);}
+.zone-disclaimer{margin-top:18px;padding:10px 14px;border:1px dashed var(--line);border-radius:8px;font-size:11.5px;color:var(--ink-soft);text-align:center;}
+.print-disclaimer{display:none;}
+
+/* ═══════════ PRINT ═══════════ */
+#cheat-print{display:none;}
+@media print{
+  body{background:#fff !important;color:#000;font-size:11px;margin:0 !important;padding:0 !important;}
+  .topbar,.hero,.search-wrap,.zone-tabs,.progress-section,.zone-actions,.stats-bar,.collection,.modal-overlay,.celebrate,.dropdown{display:none !important;}
+  .main{max-width:100%;padding:0 0 30px;}
+  .check-card{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid;margin-bottom:6px;}
+  .check-detail{display:block !important;border-top:1px solid #ddd;}
+  .check-chevron{display:none;}
+  .zone-panel{display:block !important;page-break-before:auto;}
+  .zone-header{box-shadow:none;border:1px solid #ccc;margin-top:14px;}
+  body.print-zone .zone-panel{display:none !important;}
+  body.print-zone .zone-panel.active{display:block !important;}
+  body.print-cheat .main,body.print-cheat .footer,body.print-cheat .zone-panel,body.print-cheat .print-disclaimer{display:none !important;}
+  body.print-cheat #cheat-print{display:block !important;}
+  #cheat-print{margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .cp-card{border:2.5px solid #0D1B2A;border-radius:16px;overflow:hidden;font-family:'Inter',sans-serif;color:#0D1B2A;height:272mm;display:flex;flex-direction:column;page-break-inside:avoid;page-break-after:avoid;}
+  .cp-head{background:#0D1B2A !important;color:#fff;display:flex;align-items:center;gap:12px;padding:13px 22px;}
+  .cp-head svg{width:38px;height:38px;color:var(--accent);}
+  .cp-title{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;line-height:1.2;}
+  .cp-title em{color:var(--accent);font-style:normal;}
+  .cp-sub{font-size:11.5px;color:rgba(255,255,255,.78);margin-top:2px;}
+  .cp-tag{margin-left:auto;font-size:10px;font-style:italic;color:rgba(255,255,255,.65);text-align:right;}
+  .cp-contacts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:11px 22px;background:rgba(var(--accent-rgb),.09) !important;}
+  .cp-chip{border:1.2px solid rgba(var(--accent-rgb),.55);border-radius:8px;padding:5px 9px;background:#fff !important;}
+  .cp-chip b{display:block;font-size:8.5px;text-transform:uppercase;letter-spacing:.3px;color:var(--accent-dark);}
+  .cp-chip span{font-size:12px;font-weight:700;}
+  .cp-cols{display:flex;gap:20px;padding:13px 22px 6px;flex:1;min-height:0;overflow:hidden;}
+  .cp-cols h3{font-family:'Sora',sans-serif;font-size:13px;border-bottom:2px solid var(--accent);padding-bottom:3px;margin:0 0 8px;}
+  .cp-rules{flex:1.15;}
+  .cp-rules ul{list-style:none;margin:0;padding:0;}
+  .cp-rules li{font-size:11px;line-height:1.5;padding:4px 0 4px 18px;position:relative;border-bottom:1px dashed #ddd;}
+  .cp-rules li::before{content:'✓';position:absolute;left:0;color:var(--accent-dark);font-weight:800;}
+  html[dir="rtl"] .cp-rules li{padding:4px 18px 4px 0;}
+  html[dir="rtl"] .cp-rules li::before{left:auto;right:0;}
+  .cp-numsec{flex:1;}
+  .cp-numsec table{width:100%;border-collapse:collapse;font-size:10.5px;}
+  .cp-numsec td{border-bottom:1px solid #eee;padding:4px 5px;vertical-align:top;}
+  .cp-numsec td strong{color:#0D1B2A;}
+  .cp-notes{margin:6px 22px 10px;border:1.5px dashed var(--accent);border-radius:10px;padding:8px 13px;font-size:11px;white-space:pre-wrap;max-height:34mm;overflow:hidden;}
+  .cp-notes b{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--accent-dark);display:block;margin-bottom:2px;}
+  .cp-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#0D1B2A !important;color:rgba(255,255,255,.85);padding:9px 22px;font-size:10px;line-height:1.55;margin-top:auto;}
+  .cp-foot b{color:var(--accent);}
+  .cp-qr{display:flex;align-items:center;gap:10px;text-align:right;}
+  .cp-qr img{width:68px;height:68px;background:#fff;border-radius:8px;padding:3px;}
+  .cp-qr .qr-ph{width:68px;height:68px;border:1.5px dashed rgba(255,255,255,.5);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:8.5px;text-align:center;color:rgba(255,255,255,.6);padding:4px;}
+  .footer{background:#fff;color:#555;}
+  .footer strong{color:#000;}
+  .float-nav{display:none !important;}
+  .print-disclaimer{display:block !important;position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:8.5px;color:#666;border-top:1px solid #ccc;padding:3px 0;background:#fff;}
+  @page{size:A4;margin:10mm 10mm 12mm;}
+}
+</style>
+</head>
+<body data-theme="injury" data-mode="light">
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo" id="logo-icon">S</div>
+    <div>
+      <div class="topbar-name">Safe<span>Life</span></div>
+      <div class="topbar-tagline">To all moms by a mom · NEBOSH &amp; OSHA Professional</div>
+    </div>
+  </div>
+  <div class="topbar-meta">
+    <div class="toolbar">
+      <button class="tool-btn" id="btn-search" title="Search all checks">🔍</button>
+      <button class="tool-btn" id="btn-manual" title="User Manual">📖<span class="tb-label" data-i18n="manual">Manual</span></button>
+      <button class="tool-btn" id="btn-cheat" title="Emergency Cheat Sheet">🚨<span class="tb-label" data-i18n="cheat">Cheat Sheet</span></button>
+      <button class="tool-btn" id="btn-print" title="Print / Save as PDF">🖨️<span class="tb-label" data-i18n="printPdf">Print / PDF</span></button>
+      <button class="tool-btn" id="btn-save" title="Save progress to file">💾<span class="tb-label" data-i18n="save">Save</span></button>
+      <button class="tool-btn" id="btn-load" title="Load saved progress">📂<span class="tb-label" data-i18n="load">Load</span></button>
+      <button class="tool-btn" id="btn-lang" title="Language" style="display:none">🌐<span class="tb-label" id="lang-label">EN</span>
+        <div class="dropdown" id="dd-lang"></div>
+      </button>
+      <button class="tool-btn" id="btn-theme" title="Colour theme">🎨<span class="tb-label" data-i18n="theme">Theme</span>
+        <div class="dropdown" id="dd-theme"></div>
+      </button>
+      <button class="tool-btn" id="btn-mode" title="Light / dark mode">🌙</button>
+    </div>
+    <div class="progress-pill"><span id="topbar-done">0</span>&nbsp;/ 84 <span data-i18n="checksDone" style="color:inherit;font-size:12px;">checks done</span></div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-emoji" id="hero-icon">🩹</span>
+  <div class="hero-title" data-i18n="heroTitle">Injury &amp; Post-Surgery Recovery at Home</div>
+  <div class="hero-subtitle" data-i18n="heroSub">84 practical safety checks across 6 zones · Supporting a safe, steady recovery while mobility, wounds and routines are temporarily different</div>
+  <div class="hero-badges">
+    <div class="hero-badge" data-zone="1"><span class="zic" data-zi="z1"></span> <span data-i18n="bz1">Mobility Aids &amp; Movement</span></div>
+    <div class="hero-badge" data-zone="2"><span class="zic" data-zi="z2"></span> <span data-i18n="bz2">Wound Care</span></div>
+    <div class="hero-badge" data-zone="3"><span class="zic" data-zi="z3"></span> <span data-i18n="bz3">Medication &amp; Pain</span></div>
+    <div class="hero-badge" data-zone="4"><span class="zic" data-zi="z4"></span> <span data-i18n="bz4">Bathing &amp; Personal Care</span></div>
+    <div class="hero-badge" data-zone="5"><span class="zic" data-zi="z5"></span> <span data-i18n="bz5">Home Layout &amp; Falls</span></div>
+    <div class="hero-badge" data-zone="6"><span class="zic" data-zi="z6"></span> <span data-i18n="bz6">Pacing &amp; Follow-Up</span></div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-section">
+  <div class="progress-label" data-i18n="overallProgress">Overall Progress</div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="progress-count" id="progress-count">0 of 84</div>
+</div>
+<div class="celebrate" id="celebrate">🎉 <span data-i18n="celebrate">All 84 checks complete — your home is set up to support a safe recovery. Print your checklist as a keepsake.</span></div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <input class="search-box" type="text" id="search-input" placeholder="Search checks… e.g. crutches, wound infection, grab bars, pain medication, blood clot, follow-up…">
+</div>
+
+<!-- ZONE TABS -->
+<div class="zone-tabs" id="zone-tabs">
+  <button class="zone-tab active" data-zone="1"><span class="zic" data-zi="z1"></span> <span data-i18n="z1">Mobility Aids &amp; Safe Movement</span> <span class="zone-tab-count" id="ztc-1">0/14</span></button>
+  <button class="zone-tab" data-zone="2"><span class="zic" data-zi="z2"></span> <span data-i18n="z2">Wound Care &amp; Infection Prevention</span> <span class="zone-tab-count" id="ztc-2">0/14</span></button>
+  <button class="zone-tab" data-zone="3"><span class="zic" data-zi="z3"></span> <span data-i18n="z3">Medication &amp; Pain Management</span> <span class="zone-tab-count" id="ztc-3">0/14</span></button>
+  <button class="zone-tab" data-zone="4"><span class="zic" data-zi="z4"></span> <span data-i18n="z4">Bathing, Toileting &amp; Personal Care Safety</span> <span class="zone-tab-count" id="ztc-4">0/14</span></button>
+  <button class="zone-tab" data-zone="5"><span class="zic" data-zi="z5"></span> <span data-i18n="z5">Home Layout &amp; Fall Prevention During Recovery</span> <span class="zone-tab-count" id="ztc-5">0/14</span></button>
+  <button class="zone-tab" data-zone="6"><span class="zic" data-zi="z6"></span> <span data-i18n="z6">Recovery Pacing, Mental Wellbeing &amp; Follow-Up Care</span> <span class="zone-tab-count" id="ztc-6">0/14</span></button>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main-content">
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat-pill" data-risk="critical"><span class="stat-dot critical"></span><span class="stat-count" id="s-critical">0</span> <span data-i18n="critical">Critical</span></div>
+    <div class="stat-pill" data-risk="high"><span class="stat-dot high"></span><span class="stat-count" id="s-high">0</span> <span data-i18n="high">High</span></div>
+    <div class="stat-pill" data-risk="medium"><span class="stat-dot medium"></span><span class="stat-count" id="s-medium">0</span> <span data-i18n="medium">Medium</span></div>
+    <div class="stat-pill" data-risk="low"><span class="stat-dot low"></span><span class="stat-count" id="s-low">0</span> <span data-i18n="low">Low</span></div>
+    <div class="risk-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--critical)"></div><span data-i18n="legendCritical">Critical = immediate action</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--high)"></div><span data-i18n="legendHigh">High = urgent attention</span></div>
+    </div>
+  </div>
+  <div id="search-no-results" class="search-no-results"><span data-i18n="noResults">No checks match your search. Try different keywords.</span><br><span data-i18n="notCovered" style="font-size:12.5px;"></span></div>
+</div>
+
+<!-- COLLECTION -->
+<div class="collection">
+  <h3 data-i18n="collTitle">The SafeLife Collection</h3>
+  <p data-i18n="collSub">One safety system for every stage of life. Add more modules any time — each works exactly like this one.</p>
+  <div class="collection-grid" id="collection-grid"></div>
+</div>
+
+<!-- SITUATION MODULES -->
+<div class="collection" style="padding-top:0;">
+  <h3>Situation Modules</h3>
+  <p>Real-life situations and conditions — each its own complete, standalone 84-check system. Available separately as they launch.</p>
+  <div class="collection-grid" id="situation-grid"></div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <strong>SafeLife</strong> · Injury &amp; Post-Surgery Recovery Module · PRO Edition<br>
+  Created by a NEBOSH &amp; OSHA trained HSE professional · "To all moms by a mom"<br>
+  Evidence base: WHO falls-prevention guidance · WHO Medication Without Harm · recognised post-surgical wound-care and mobility guidance · international rehabilitation best practice<br>
+  <span style="color:rgba(255,255,255,.35);" data-i18n="disclaimer">This checklist is educational and does not replace professional medical advice. Always consult your doctor, surgeon, physiotherapist, or a qualified healthcare professional for guidance specific to your recovery.</span>
+</footer>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-manual">
+  <div class="modal">
+    <div class="modal-head"><h3>📖 <span data-i18n="manualTitle">User Manual</span></h3><button class="modal-close" data-close="modal-manual">✕</button></div>
+    <div class="modal-body" id="manual-body"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-cheat">
+  <div class="modal">
+    <div class="modal-head"><h3>🚨 <span data-i18n="cheatTitle">Emergency Cheat Sheet</span></h3><button class="modal-close" data-close="modal-cheat">✕</button></div>
+    <div class="modal-body" id="cheat-body"></div>
+    <div class="modal-actions"><button class="btn btn-outline" id="btn-seller" title="Seller: set this product's QR code" style="margin-right:auto;">⚙</button><button class="btn btn-primary" id="btn-print-cheat" data-i18n="printCheat">🖨️ Print cheat sheet</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-seller">
+  <div class="modal">
+    <div class="modal-head"><h3>⚙ Seller Settings</h3><button class="modal-close" data-close="modal-seller">✕</button></div>
+    <div class="modal-body" id="seller-body"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-print">
+  <div class="modal">
+    <div class="modal-head"><h3>🖨️ <span data-i18n="printTitle">Print or Save as PDF</span></h3><button class="modal-close" data-close="modal-print">✕</button></div>
+    <div class="modal-body">
+      <p data-i18n="printHint">Choose what to print. To save as a PDF instead of printing on paper, choose "Save as PDF" as the printer in the print dialog.</p>
+      <p style="font-size:12.5px;color:var(--ink-soft);margin-top:6px;" data-i18n="printNote">All checks are automatically expanded to full detail when printing — no need to open them first.</p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" id="print-zone" data-i18n="printZone">Current zone only</button>
+      <button class="btn btn-outline" id="print-cheat2" data-i18n="printCheat2">Cheat sheet</button>
+      <button class="btn btn-primary" id="print-all" data-i18n="printAll">Full checklist (all 84)</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="load-file" accept=".json" style="display:none">
+
+<!-- FLOATING CHECK NAVIGATION -->
+<div class="float-nav">
+  <button class="float-btn" id="fn-top" title="Back to top">⤒</button>
+  <button class="float-btn" id="fn-prev" title="Previous check">↑</button>
+  <button class="float-btn" id="fn-next" title="Next check">↓</button>
+</div>
+
+<!-- PRINT PAGE DISCLAIMER (repeats on every printed page) -->
+<div class="print-disclaimer" data-i18n="disclaimer">This checklist is educational and does not replace professional medical advice. Always consult your doctor, surgeon, physiotherapist, or a qualified healthcare professional for guidance specific to your recovery.</div>
+
+<div id="cheat-print"></div>
+
+<script>
+// ═══════════════════════════════════════════
+// SELLER BRANDING — edit these three lines to make it yours
+// ═══════════════════════════════════════════
+const BRAND_NAME = 'The Snag Tag';
+const STORE_URL  = '';   // e.g. 'thesnagtag.gumroad.com' — printed under the QR code on the cheat sheet
+const QR_IMAGE   = '';   // paste your QR code as a data URL: 'data:image/png;base64,...'
+
+// ═══════════════════════════════════════════
+// I18N — full interface language packs (check content in English, verified guidance)
+// ═══════════════════════════════════════════
+const I18N = {
+en:{name:'English',manual:'Manual',cheat:'Cheat Sheet',printPdf:'Print / PDF',save:'Save',load:'Load',theme:'Theme',checksDone:'checks done',heroTitle:'Injury &amp; Post-Surgery Recovery at Home',heroSub:'84 practical safety checks across 6 zones · Supporting a safe, steady recovery while mobility, wounds and routines are temporarily different',bz1:'Mobility Aids &amp; Movement',bz2:'Wound Care',bz3:'Medication &amp; Pain',bz4:'Bathing &amp; Personal Care',bz5:'Home Layout &amp; Falls',bz6:'Pacing &amp; Follow-Up',overallProgress:'Overall Progress',ofWord:'of',z1:'Mobility Aids &amp; Safe Movement',z2:'Wound Care &amp; Infection Prevention',z3:'Medication &amp; Pain Management',z4:'Bathing, Toileting &amp; Personal Care Safety',z5:'Home Layout &amp; Fall Prevention During Recovery',z6:'Recovery Pacing, Mental Wellbeing &amp; Follow-Up Care',zd1:'14 checks: crutches, walkers and wheelchairs fitted correctly, safe transfer technique, stairs, and using aids properly to avoid a second injury.',zd2:'14 checks: dressing changes, recognising infection early, hygiene, drain care and safe wound-care supplies.',zd3:'14 checks: dosing schedules, safe storage, opioid safety awareness, interaction checks and avoiding under- or over-medicating.',zd4:'14 checks: shower seats, grab bars and avoiding falls during the most vulnerable daily moments — bathing and toileting.',zd5:'14 checks: decluttering, temporary single-level living, furniture and chair height, and lighting along walking routes.',zd6:'14 checks: pacing activity to avoid setbacks, spotting genuine complications early, the emotional toll of temporary dependence, and tracking follow-up care.',critical:'Critical',high:'High',medium:'Medium',low:'Low',legendCritical:'Critical = immediate action',legendHigh:'High = urgent attention',noResults:'No checks match your search. Try different keywords.',searchPh:'Search checks… e.g. crutches, wound infection, grab bars, pain medication, blood clot, follow-up…',who:'Who',what:'What',where:'Where',why:'Why',how:'How',standards:'Standards &amp; Measurements',example:'Real-World Example',quickTip:'Quick Win',markAll:'Mark All Complete',unmarkAll:'Unmark All',expandAll:'Expand All',collapseAll:'Collapse All',celebrate:'All 84 checks complete — your home is set up to support a safe recovery. Print your checklist as a keepsake.',collTitle:'The SafeLife Collection',collSub:'One safety system for every stage of life. Every module below is a complete, standalone 84-check system — available separately, or as the full 12-module bundle.',owned:'✓ Current Module',addon:'Available Separately',disclaimer:'This checklist is educational and does not replace professional medical advice. Always consult your doctor, surgeon, physiotherapist, or a qualified healthcare professional for guidance specific to your recovery.',manualTitle:'User Manual',cheatTitle:'Emergency Cheat Sheet',printTitle:'Print or Save as PDF',printHint:'Choose what to print. To save as a PDF instead of printing on paper, choose "Save as PDF" as the printer in the print dialog.',printZone:'Current zone only',printCheat2:'Cheat sheet',printAll:'Full checklist (all 84)',printCheat:'🖨️ Print cheat sheet',langNote:'Safety check content is written in English (verified international guidance). Interface labels switch language.',saved:'Progress saved',loaded:'Progress loaded',cheatContacts:'My emergency contacts',cheatHint:'Make it yours: edit any name or number, add or delete rows. Everything saves automatically on this device and prints on your cheat sheet.',addContact:'+ Add contact',myNotes:'My notes',notesPh:'Allergies, medications, surgeon/physio contact details, follow-up dates, home helper access codes…',rules:'The 10 golden rules',keyNums:'Key measurements at a glance',delRow:'Remove',notCovered:'Topic not covered in this module? Check the cheat sheet, ask your health professional, or request it via your SafeLife store page — new checks arrive in free updates.',printNote:'All checks are automatically expanded to full detail when printing — no need to open them first.',mn1:'Newborn',mn2:'Infant',mn3:'Toddler',mn4:'Preschooler',mn5:'School-Age',mn6:'Teenager',mn7:'Young Adult',mn8:'Adult',mn9:'Middle-Aged Adult',mn10:'Active Seniors',mn11:'Advanced Age',mn12:'90+ and Longevity',
+manualBody:'<h4>🚀 Getting started</h4><p>84 checks in 6 zones. Tap any check to see Who / What / Where / Why / How, exact measurements and standards, a real-world example and a quick-win tip.</p><h4>✅ Progress</h4><p>Tick the box to complete a check — bars and counters update instantly. Each zone has Mark All / Unmark All and Expand / Collapse All buttons, and the floating ↑ ↓ arrows jump between checks.</p><h4>🔍 Search &amp; filters</h4><p>The search box filters all 84 checks live across every zone. Tap a risk pill (Critical / High / Medium / Low) to filter by risk level; tap again to clear.</p><h4>🎨 Personalise</h4><p>Pick a colour theme and light or dark mode — remembered on this device. Make the cheat sheet yours: add your own emergency numbers and notes.</p><h4>💾 Save &amp; 🖨️ Print</h4><p>Progress saves automatically on this device as you go. To move your progress to another device or keep a backup, tap 💾 Save — this downloads a small file. On the new device (or after clearing your browser), open the same checklist, tap 📂 Load, and choose that file to restore your progress exactly where you left off. Keep the file somewhere safe, like your email or a notes app. Print the full checklist, one zone, or your personalised cheat sheet — all checks expand automatically when printing. Choose "Save as PDF" in the print dialog to create a PDF.</p>'}
+};
+
+// ═══════════════════════════════════════════
+// TRADEMARK ICON SET — same outline family as the whole collection
+// ═══════════════════════════════════════════
+const _svg = inner => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">' + inner + '</svg>';
+const ICONS = {
+  stage: _svg('<path d="M12 3v18"/><path d="M8 5h8"/><path d="M9.6 13h4.8"/>'),
+  z1: _svg('<path d="M14 3c-2.8 0-3.4 2.8-3.4 5.6V21"/><circle cx="14.6" cy="3" r="1.3"/><path d="M8 21h6"/>'),
+  z2: _svg('<rect x="5" y="9.5" width="14" height="5.6" rx="2.6" transform="rotate(-18 12 12)"/><circle cx="9" cy="10.3" r="0.6" fill="currentColor" stroke="none"/><circle cx="15" cy="13.7" r="0.6" fill="currentColor" stroke="none"/>'),
+  z3: _svg('<rect x="7.4" y="6.4" width="9.2" height="13.6" rx="2"/><path d="M7.4 10.6h9.2"/><rect x="9.4" y="3" width="5.2" height="3.4" rx="1"/>'),
+  z4: _svg('<path d="M12.2 3.4a4.6 4.6 0 0 0-4.6 4.6v1.2"/><path d="M4.2 12.4h15.6"/><path d="M8.4 16.2v2.2M12 16.2v3M15.6 16.2v2.2"/>'),
+  z5: _svg('<path d="M4 11.5l8-6.8 8 6.8"/><path d="M6.2 10.2V19h11.6v-8.8"/><path d="M6.2 15h11.6"/><path d="M12 10.2V19"/>'),
+  z6: _svg('<rect x="4" y="5" width="16" height="15" rx="2.2"/><path d="M4 9.6h16"/><path d="M12.2 12.6c-1.6-1.6-4.1-.4-4.1 1.5 0 2 4.1 4 4.1 4s4.1-2 4.1-4c0-1.9-2.5-3.1-4.1-1.5z"/>'),
+  stages: [
+    _svg('<circle cx="12" cy="13" r="6.5"/><path d="M12 6.5c0-1.8.8-2.7 2.3-3"/><circle cx="9.7" cy="12.2" r="0.65" fill="currentColor" stroke="none"/><circle cx="14.3" cy="12.2" r="0.65" fill="currentColor" stroke="none"/><path d="M9.9 15c1.4 1.2 2.8 1.2 4.2 0"/>'),
+    _svg('<circle cx="12" cy="7" r="3.2"/><path d="M6.8 20.5v-3.2a5.2 5.2 0 0 1 10.4 0v3.2"/>'),
+    _svg('<path d="M12 3.5l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/>'),
+    _svg('<rect x="6.5" y="8" width="11" height="12" rx="3"/><path d="M9.5 8V6.2a2.5 2.5 0 0 1 5 0V8"/><rect x="9.7" y="13" width="4.6" height="4" rx="1"/><path d="M6.5 11.5h11"/>'),
+    _svg('<path d="M5 15v-1.5a7 7 0 0 1 14 0V15"/><rect x="4" y="14" width="3.4" height="6" rx="1.6"/><rect x="16.6" y="14" width="3.4" height="6" rx="1.6"/>'),
+    _svg('<path d="M12 4.5L2.8 9l9.2 4.5L21.2 9z"/><path d="M6.8 11.5v3.8c0 1.6 10.4 1.6 10.4 0v-3.8"/><path d="M21.2 9v5"/>'),
+    _svg('<rect x="3.8" y="8" width="16.4" height="11.2" rx="2"/><path d="M9.5 8V6.6A1.6 1.6 0 0 1 11.1 5h1.8a1.6 1.6 0 0 1 1.6 1.6V8M3.8 12.8h16.4"/>'),
+    _svg('<path d="M8.5 9.5v-4c2.3 1.8 4.7 1.8 7 0v4a3.5 3.5 0 0 1-7 0z"/><path d="M12 13v8M12 18c-1.8-.4-3-1.4-3.6-3"/>'),
+    _svg('<circle cx="8.5" cy="5" r="2.1"/><path d="M8.5 7.1c-1.2.4-2 1.5-2 2.8v1.8"/><path d="M8.7 9.6c3.4 0 5.8 2.5 5.8 5.7 0 2.2-1.2 3.9-3 4.9"/><path d="M6.5 11.7v3.4c0 2.2 1 3.9 2.7 5"/>'),
+    _svg('<circle cx="12" cy="5.8" r="2.3"/><path d="M8.2 17.3a3.8 3.8 0 0 1 7.6 0v1.2"/><path d="M6.6 20.5h10.8"/><path d="M8.6 20.5v-3.2M15.4 20.5v-3.2"/><path d="M12 13.4c-.9-.8-1.5-1.3-1.5-1.9a.85.85 0 0 1 1.5-.55.85.85 0 0 1 1.5.55c0 .6-.6 1.1-1.5 1.9z"/>'),
+    _svg('<circle cx="7" cy="5.3" r="2.2"/><path d="M4 19v-3.4a3.4 3.4 0 0 1 3.4-3.4h.6a3.4 3.4 0 0 1 2.6 1.2l1 1.2"/><circle cx="17" cy="9.4" r="1.7"/><path d="M13.9 19v-2.4a2.6 2.6 0 0 1 2.6-2.6h1a2.6 2.6 0 0 1 2.6 2.6V19"/><path d="M9.5 15.3l2.7 1.4"/>'),
+    _svg('<path d="M6.4 8.1c-2.2 0-4 1.8-4 3.9s1.8 3.9 4 3.9c3.4 0 5.2-2.5 5.7-3.9.5-1.4 2.3-3.9 5.7-3.9 2.2 0 4 1.8 4 3.9s-1.8 3.9-4 3.9c-3.4 0-5.2-2.5-5.7-3.9-.5-1.4-2.3-3.9-5.6-3.9z"/>'),
+    _svg('<path d="M8.5 8.2V6.6a3.5 3.5 0 0 1 7 0v1.6"/><rect x="4.3" y="8.2" width="15.4" height="11.8" rx="3.6"/><path d="M4.3 13.2h15.4"/><rect x="10.4" y="10.6" width="3.2" height="2" rx="0.5"/>'),
+    _svg('<circle cx="7.8" cy="12" r="5.3"/><circle cx="16.2" cy="12" r="5.3"/><circle cx="6.3" cy="11.2" r="0.6" fill="currentColor" stroke="none"/><circle cx="9.3" cy="11.2" r="0.6" fill="currentColor" stroke="none"/><circle cx="14.7" cy="11.2" r="0.6" fill="currentColor" stroke="none"/><circle cx="17.7" cy="11.2" r="0.6" fill="currentColor" stroke="none"/><path d="M6.5 13.8c.9.7 1.8.7 2.7 0M14.9 13.8c.9.7 1.8.7 2.7 0"/>'),
+    _svg('<rect x="6" y="4.6" width="12" height="16.4" rx="2.2"/><path d="M9.4 4.6V3.7A1.7 1.7 0 0 1 11.1 2h1.8a1.7 1.7 0 0 1 1.7 1.7v.9"/><path d="M9 13.2l2.2 2.2L15.5 11"/>'),
+    _svg('<path d="M4 11.5l8-6.8 8 6.8"/><path d="M6.2 10.2V19a1 1 0 0 0 1 1h9.6a1 1 0 0 0 1-1v-8.8"/><path d="M9.4 19v-4.6h5.2V19"/><path d="M9 13l2.2 1.6 3.4-3"/>'),
+    _svg('<path d="M12 3v18"/><path d="M8 5h8"/><path d="M9.6 13h4.8"/>')
+  ]
+};
+function injectIcons(){
+  document.getElementById('logo-icon').innerHTML = ICONS.stage;
+  document.getElementById('hero-icon').innerHTML = ICONS.stage;
+  document.querySelectorAll('.zic[data-zi]').forEach(el=>{ el.innerHTML = ICONS[el.dataset.zi] || ''; });
+}
+// ═══════════════════════════════════════════
+// ALL 84 CHECKS — INJURY & POST-SURGERY RECOVERY AT HOME
+// ═══════════════════════════════════════════
+const ZONES = [
+  {
+    id: 1, name: 'Mobility Aids & Safe Movement', icon: '🩼',
+    desc: '14 checks covering crutches, walkers and wheelchairs fitted correctly, safe transfer technique, stairs, and using aids properly to avoid a second injury.',
+    checks: [
+      { id:'ir01', num:'IR01', risk:'critical', title:'Crutches, Walker or Wheelchair Fitted Correctly',
+        who:'Anyone using a mobility aid during recovery',
+        what:'A mobility aid that is the wrong height or width, increasing strain and fall risk instead of preventing it',
+        where:'Wherever the aid is used throughout the home',
+        why:'An incorrectly fitted mobility aid can cause more harm than good — wrong crutch height strains the wrists and shoulders, and a poorly fitted walker offers less real stability than it appears to.',
+        how:'Have a physiotherapist or the discharging hospital team confirm the correct height and fit before relying on the aid at home, and recheck the fit if swelling or bandaging changes over the following days.',
+        measurement:'Recognised guidance: crutch handgrip height level with the wrist crease when standing with arms relaxed, elbow bent roughly 15-20 degrees.',
+        example:'A quick height adjustment before leaving hospital prevents the underarm strain that comes from crutches set too high.',
+        tip:'Recheck the fit again a few days after swelling has settled — the correct height on day one is not always correct by day five.' },
+
+      { id:'ir02', num:'IR02', risk:'critical', title:'Safe Transfer Technique Between Bed, Chair and Standing',
+        who:'Anyone with reduced weight-bearing or mobility, and anyone assisting them',
+        what:'An unplanned, rushed transfer that risks a fall or re-injury at exactly the moment stability matters most',
+        where:'Bedside, chair, and any seated-to-standing transition point',
+        why:'Transfers are one of the highest-risk moments in early recovery — a clear, practised technique reduces the chance of a fall during the most vulnerable daily movements.',
+        how:'Learn the specific transfer technique recommended for this injury or surgery from a physiotherapist before leaving hospital, and practise it slowly with support present until it feels confident.',
+        measurement:'No numeric standard — confirm technique directly with the physiotherapist or discharge team, as it varies by injury type.',
+        example:'Practising a pivot transfer with a physiotherapist present before discharge prevents an unsteady first attempt alone at home.',
+        tip:'Never rush a transfer in the first days home — a slow, planned movement is always safer than a quick one.' },
+
+      { id:'ir03', num:'IR03', risk:'high', title:'Clear, Wide Pathways for Mobility Aids',
+        who:'Anyone using a walker, crutches or wheelchair',
+        what:'Narrow doorways, rugs or furniture that obstruct the path a mobility aid needs to travel safely',
+        where:'Hallways, doorways, and the main route between bed, bathroom and living area',
+        why:'A mobility aid needs more space than ordinary walking, and an obstructed path increases both fall risk and the temptation to move without the aid.',
+        how:'Widen or clear the most-used routes, temporarily remove low furniture and loose rugs, and confirm doorways are wide enough for the specific aid in use.',
+        measurement:'Aim for a clear path at least 90cm (35 in) wide along all frequently used routes.',
+        example:'Temporarily moving a side table out of the hallway prevents a walker from catching on it during the first unsteady week home.',
+        tip:'Walk the planned route yourself with the empty aid before the person needs to use it, checking for tight corners or narrow gaps.' },
+
+      { id:'ir04', num:'IR04', risk:'high', title:'Stairs Managed Safely or Avoided Where Possible',
+        who:'Anyone with reduced mobility or weight-bearing restrictions',
+        what:'Attempting stairs without the specific technique or support recommended for the current injury',
+        where:'Any staircase in or leading to the home',
+        why:'Stairs combine height, balance and weight-bearing in a way that is particularly risky during recovery, and the safe technique differs significantly depending on the injury.',
+        how:'Confirm the specific stair technique for this injury with a physiotherapist, use a handrail on the stronger side, and consider temporarily relocating essential living to a single level if stairs cannot be avoided safely.',
+        measurement:'No numeric standard — confirm the specific technique and any temporary stair restriction directly with the medical or physiotherapy team.',
+        example:'Setting up a temporary bed downstairs for the first two weeks removes the need for repeated risky stair use during the most fragile recovery period.',
+        tip:'If stairs feel uncertain even once, stop and get one more supervised practice run before doing them alone.' },
+
+      { id:'ir05', num:'IR05', risk:'medium', title:'Rubber Tips and Grips Checked Regularly',
+        who:'Anyone using crutches, a cane or a walker',
+        what:'Worn or missing rubber tips that reduce grip and increase the risk of a slip',
+        where:'The base of every crutch, cane or walker leg',
+        why:'A worn rubber tip can turn a stable aid into a slipping hazard, particularly on smooth or wet flooring.',
+        how:'Check rubber tips weekly for wear, cracking or smoothness, and replace them promptly — they are inexpensive and widely available.',
+        measurement:'Replace any tip that looks smooth, cracked, or has visible tread wear.',
+        example:'A quick weekly check catches a worn crutch tip before it causes a slip on a tiled kitchen floor.',
+        tip:'Keep a spare set of tips on hand so a worn one can be swapped immediately rather than used a few extra days out of convenience.' },
+
+      { id:'ir06', num:'IR06', risk:'high', title:'Weight-Bearing Instructions Followed Precisely',
+        who:'Anyone recovering from a lower-limb injury or surgery with weight-bearing restrictions',
+        what:'Putting more weight through an injured limb than the surgical or medical team has advised, risking delayed healing or re-injury',
+        where:'Throughout all daily movement',
+        why:'Weight-bearing instructions (non-weight-bearing, partial, or as-tolerated) are specific to the injury and healing stage, and exceeding them is one of the most common causes of setbacks in recovery.',
+        how:'Confirm the exact weight-bearing status in writing before leaving hospital, keep a note of it on the personalised cheat sheet, and check in with every visiting caregiver so they reinforce it rather than accidentally encourage more.',
+        measurement:'No numeric standard — follow the specific weight-bearing status given by the surgical or medical team exactly, and reconfirm at every follow-up appointment.',
+        example:'Writing "non-weight-bearing, left leg, until follow-up" on the cheat sheet keeps every visiting family member consistently reinforcing the same instruction.',
+        tip:'If weight-bearing status is ever unclear, call the surgical team to confirm rather than guessing — this is not a detail worth assuming.' },
+
+      { id:'ir07', num:'IR07', risk:'medium', title:'Footwear That Supports Safe Movement',
+        who:'Anyone walking with or without a mobility aid during recovery',
+        what:'Loose slippers or unsupportive footwear that reduce stability while using crutches, a walker, or an unfamiliar gait',
+        where:'Worn throughout the home',
+        why:'Supportive, secure footwear improves stability precisely when balance and gait are already compromised by injury or surgery.',
+        how:'Choose well-fitting, low-heeled, closed-back shoes or slippers with a non-slip sole, and avoid walking in socks alone or in open-backed slippers.',
+        measurement:'Recognised guidance: avoid loose, backless, or slip-prone footwear during any period of altered gait or mobility aid use.',
+        example:'Swapping open-backed slippers for a secure, closed-back pair noticeably improves confidence on a wooden floor.',
+        tip:'If swelling changes shoe fit, size up temporarily rather than forcing a too-tight shoe that alters gait further.' },
+
+      { id:'ir08', num:'IR08', risk:'medium', title:'Wheelchair Brakes and Fit Checked Before Use',
+        who:'Anyone using a wheelchair during recovery',
+        what:'A wheelchair with brakes not engaged during transfers, or a poor fit that causes pressure points',
+        where:'Wherever the wheelchair is used, especially during transfers',
+        why:'Unlocked brakes during a transfer are a common cause of falls, and a poorly fitted wheelchair can create pressure injuries over time.',
+        how:'Always engage both brakes before any transfer in or out of the wheelchair, and confirm seat width, depth and cushioning are appropriate with the equipment provider.',
+        measurement:'No numeric standard — brakes must be engaged and checked before every single transfer, without exception.',
+        example:'A caregiver develops the habit of saying "brakes" out loud before every transfer, turning a critical safety step into an automatic routine.',
+        tip:'Make checking the brakes a spoken, repeated habit rather than a silent assumption — it is one of the easiest steps to forget under time pressure.' },
+
+      { id:'ir09', num:'IR09', risk:'low', title:'Mobility Aid Stored Within Easy Reach',
+        who:'Anyone who needs their mobility aid immediately upon waking or standing',
+        what:'A mobility aid left out of reach, encouraging an unsupported first step without it',
+        where:'Bedside and any seating area used regularly',
+        why:'The moments right after waking or standing from rest are a common point of unplanned, unsupported movement if the aid is not immediately within reach.',
+        how:'Keep the mobility aid within arm\'s reach of the bed and any regularly used chair, positioned so it can be grasped without leaning or overreaching.',
+        measurement:'No numeric standard — position the aid close enough to reach without shifting body weight forward.',
+        example:'Positioning the walker directly beside the bed removes the temptation to attempt an unsupported first step each morning.',
+        tip:'Do a final check each night that the aid is within reach before settling in to sleep.' },
+
+      { id:'ir10', num:'IR10', risk:'medium', title:'Outdoor and Uneven Surface Awareness',
+        who:'Anyone using a mobility aid outdoors during recovery',
+        what:'Gravel, grass, kerbs or uneven paving that behave very differently underfoot than smooth indoor flooring',
+        where:'Garden paths, driveways, and any outdoor route',
+        why:'Mobility aids that feel stable indoors can behave unpredictably on uneven or soft outdoor surfaces, and the consequences of a fall outdoors are often more serious due to hard surfaces.',
+        how:'Practise on outdoor surfaces with support present before attempting them alone, and consider a second person accompanying early outdoor trips.',
+        measurement:'No numeric standard — treat every new outdoor surface as untested until practised safely at least once with support.',
+        example:'A supported first walk on the garden path reveals that the crutches sink slightly into the lawn, prompting a switch to the paved route instead.',
+        tip:'Choose the smoothest available route for the first few outdoor trips, even if it is not the shortest.' },
+
+      { id:'ir11', num:'IR11', risk:'low', title:'Mobility Aid Kept Clean and in Good Repair',
+        who:'Every household relying on a mobility aid for more than a few days',
+        what:'A mobility aid with loose bolts, sticky wheels, or general wear that reduces reliability over time',
+        where:'The mobility aid itself',
+        why:'Aids used daily over weeks of recovery need periodic checking, as small mechanical issues can develop gradually and go unnoticed until they cause a problem.',
+        how:'Wipe down and visually check the aid weekly for loose fittings, sticking wheels or brakes, and address any issue immediately rather than waiting.',
+        measurement:'No numeric standard — a weekly visual and functional check is a reasonable routine for the duration of recovery.',
+        example:'A weekly check catches a loosening bolt on a walker frame before it becomes an actual stability issue.',
+        tip:'Set a recurring weekly reminder for this check — it is easy to forget once the aid becomes part of daily routine.' },
+
+      { id:'ir12', num:'IR12', risk:'medium', title:'Correct Technique for Sitting Down and Standing Up',
+        who:'Anyone recovering from lower-limb or spinal injury or surgery',
+        what:'Sitting or standing using the uninjured side incorrectly, or using furniture that is not stable enough to support the movement',
+        where:'Any chair, sofa, bed, or toilet seat used regularly',
+        why:'The specific technique for sitting and standing safely depends on the injury, and using the wrong pattern can strain the healing area or cause a fall.',
+        how:'Confirm the correct sit-to-stand technique for this specific injury with a physiotherapist, and choose firm, stable seating with arms rather than low, soft furniture during early recovery.',
+        measurement:'No numeric standard — confirm technique with the physiotherapy team, as it varies significantly by injury type.',
+        example:'Temporarily using a firm dining chair with arms instead of a low sofa makes standing up noticeably safer and easier in the first weeks.',
+        tip:'Add a firm cushion to raise a favourite but low chair, rather than avoiding it altogether during recovery.' },
+
+      { id:'ir13', num:'IR13', risk:'low', title:'A Second Person Present for Early Mobility Attempts',
+        who:'Anyone in the first days of using a new mobility aid or technique',
+        what:'Attempting a new or unfamiliar movement alone before confidence and technique are established',
+        where:'Anywhere movement is attempted for the first few times',
+        why:'The first attempts at any new mobility technique carry the highest risk, and having someone present specifically for those early attempts significantly reduces the consequences of a stumble.',
+        how:'Arrange for a caregiver or family member to be present for the first attempts at any new movement — first steps after surgery, first stairs, first outdoor walk — even if supervision is not needed for long afterward.',
+        measurement:'No numeric standard — plan supervised support specifically for genuine "firsts," not indefinitely.',
+        example:'Having a partner present for the very first attempt at stairs after surgery catches an early wobble before it becomes a fall.',
+        tip:'Treat each new movement milestone as its own small "first" worth planning supervision around, rather than assuming general confidence transfers automatically.' },
+
+      { id:'ir14', num:'IR14', risk:'medium', title:'Recognising When a Mobility Aid Needs Reassessment',
+        who:'Anyone whose recovery, swelling, or pain level changes over time',
+        what:'Continuing to use a mobility aid or technique that no longer matches current ability, in either direction — too much support, or not enough',
+        where:'Throughout the whole recovery period',
+        why:'Recovery is not linear, and needs can change in either direction — reassessing periodically ensures the aid and technique still match current ability rather than an earlier stage of healing.',
+        how:'Revisit fit, technique and aid choice at each follow-up appointment, and flag any change in confidence, pain or swelling to the physiotherapy or medical team promptly.',
+        measurement:'No numeric standard — reassess at every follow-up appointment, or sooner if confidence or symptoms change noticeably.',
+        example:'A follow-up appointment identifies that crutches are no longer needed and a cane is now sufficient, safely reducing reliance as healing progresses.',
+        tip:'Progress is worth celebrating, but confirm any change in aid use with the medical team first rather than self-adjusting.' }
+    ]
+  },
+  {
+    id: 2, name: 'Wound Care & Infection Prevention', icon: '🩹',
+    desc: '14 checks covering dressing changes, recognising infection early, hygiene, drain care and safe wound-care supplies.',
+    checks: [
+      { id:'ir15', num:'IR15', risk:'critical', title:'Dressing Changes Follow the Exact Instructions Given',
+        who:'Anyone with a surgical or injury wound requiring dressing changes',
+        what:'Dressing changes done inconsistently, too often, or not often enough compared with what was actually advised',
+        where:'Wherever dressing changes take place, typically bathroom or bedroom',
+        why:'Wound-care instructions are specific to the type of wound and surgery, and deviating from them — even with good intentions — can slow healing or increase infection risk.',
+        how:'Follow the exact dressing-change frequency, technique and materials given by the surgical or wound-care team, and keep written instructions with the personalised cheat sheet for easy reference.',
+        measurement:'No numeric standard — follow the specific frequency and technique given for this wound; do not assume general wound-care habits apply.',
+        example:'Keeping a written copy of the exact dressing instructions on the cheat sheet prevents a well-meaning but incorrect change by a visiting relative.',
+        tip:'If instructions are unclear or forgotten before discharge, call the surgical team to confirm rather than guessing based on a previous experience.' },
+
+      { id:'ir16', num:'IR16', risk:'critical', title:'Recognising the Early Signs of Wound Infection',
+        who:'Everyone caring for or recovering with a healing wound',
+        what:'Increasing redness, warmth, swelling, pus, a foul odour, or fever going unnoticed or dismissed as normal healing',
+        where:'The wound site and surrounding skin',
+        why:'Early recognition of infection allows prompt treatment, while a delay can allow a manageable infection to become a serious one.',
+        how:'Check the wound at every dressing change for spreading redness, increasing pain, discharge, odour, or fever, and know in advance who to contact if any of these appear.',
+        measurement:'Recognised guidance: contact the medical team promptly for spreading redness, new or increasing pus, fever, or pain that is worsening rather than improving.',
+        example:'Noticing spreading redness at a dressing change prompts a same-day call to the surgical team rather than a wait-and-see approach.',
+        tip:'Take a photo of the wound at each check — comparing photos over a few days makes genuine change much easier to spot than memory alone.' },
+
+      { id:'ir17', num:'IR17', risk:'high', title:'Hand Hygiene Before Any Wound Contact',
+        who:'Anyone touching the wound, dressing, or surrounding area',
+        what:'Wound care performed without proper handwashing first, introducing bacteria to a vulnerable healing site',
+        where:'Wherever dressing changes or wound checks happen',
+        why:'Hands are one of the most common routes for introducing infection to an open or healing wound, and this is one of the simplest, most effective prevention steps available.',
+        how:'Wash hands thoroughly with soap and water, or use an appropriate hand sanitiser, immediately before touching the wound, dressing, or any wound-care supplies.',
+        measurement:'Recognised guidance: wash hands for at least 20 seconds with soap and water before any wound contact.',
+        example:'Making handwashing an automatic first step of every dressing change removes the risk of a rushed, unwashed touch.',
+        tip:'Keep hand sanitiser next to the wound-care supplies so the step is never skipped for convenience.' },
+
+      { id:'ir18', num:'IR18', risk:'high', title:'Wound-Care Supplies Stored Clean and Ready',
+        who:'Every household managing a healing wound at home',
+        what:'Wound-care supplies stored loosely, exposed to dust, or shared inconsistently between dressing changes',
+        where:'A dedicated, clean storage area for wound-care supplies',
+        why:'Keeping supplies clean, organised and dedicated to wound care reduces contamination risk and makes dressing changes faster and more consistent.',
+        how:'Store dressings, tape, and cleaning solution in a clean, closed container reserved for wound care only, and check regularly that supplies are not running low.',
+        measurement:'No numeric standard — keep supplies in a clean, closed container and restock before running out, not after.',
+        example:'Keeping all wound-care supplies together in a labelled box makes every dressing change faster and reduces the chance of using something not intended for wound care.',
+        tip:'Do a supply check every few days rather than discovering a shortage mid dressing-change.' },
+
+      { id:'ir19', num:'IR19', risk:'high', title:'Drain Care Managed Correctly, If Applicable',
+        who:'Anyone recovering with a surgical drain in place',
+        what:'A surgical drain not emptied, measured, or checked as instructed, risking blockage or infection',
+        where:'Wherever the drain site is located',
+        why:'Surgical drains require specific, regular care and measurement, and this is a step that is easy to under-prioritise while managing everything else during early recovery.',
+        how:'Follow the exact drain-emptying schedule and measurement instructions given by the surgical team, record output as advised, and know the specific signs that mean the drain site needs urgent attention.',
+        measurement:'No numeric standard — follow the specific emptying schedule and output-recording instructions given for this drain.',
+        example:'Keeping a simple daily log of drain output, as instructed, helps the surgical team decide confidently when the drain is ready to be removed.',
+        tip:'If a drain is in place, put its care schedule directly on the personalised cheat sheet so it is never accidentally missed during a busy day.' },
+
+      { id:'ir20', num:'IR20', risk:'medium', title:'Bathing and Showering Adapted Around the Wound',
+        who:'Anyone with a healing wound and specific bathing restrictions',
+        what:'Getting a wound wet or soaking it before it is medically appropriate to do so',
+        where:'Bathroom, bath, and shower',
+        why:'Many wounds have specific restrictions on when and how they can get wet, and following these precisely supports proper healing and reduces infection risk.',
+        how:'Confirm exactly when and how the wound can get wet with the surgical team, and use waterproof covers or sponge bathing as instructed until cleared for normal bathing.',
+        measurement:'No numeric standard — follow the specific bathing clearance given for this wound and surgery type.',
+        example:'Using a waterproof dressing cover for showers in the first two weeks, as instructed, keeps the wound protected while allowing normal hygiene to continue.',
+        tip:'If unsure whether a wound can get wet yet, wait and confirm rather than assuming based on how it looks.' },
+
+      { id:'ir21', num:'IR21', risk:'medium', title:'Clothing and Bedding Chosen to Protect the Wound',
+        who:'Anyone with a healing wound in an area affected by clothing or bedding friction',
+        what:'Tight, rough, or poorly positioned clothing and bedding that rubs against or puts pressure on a healing wound',
+        where:'Wherever clothing or bedding contacts the wound site',
+        why:'Friction and pressure can irritate a healing wound, dislodge a dressing, or slow healing, and this is easily avoided with a few simple clothing choices.',
+        how:'Choose loose, soft clothing that does not rub against the wound site, and adjust bedding or sleeping position to keep pressure off the area where possible.',
+        measurement:'No numeric standard — choose clothing and positioning that keeps direct pressure and friction off the wound site.',
+        example:'Switching to loose, soft pyjama bottoms instead of fitted trousers removes a source of repeated dressing irritation.',
+        tip:'Have a couple of specifically loose, comfortable outfits set aside for the early recovery period rather than relying on the usual wardrobe.' },
+
+      { id:'ir22', num:'IR22', risk:'medium', title:'Wound-Care Appointments Kept on Schedule',
+        who:'Anyone with a scheduled wound check, suture removal, or dressing change appointment',
+        what:'A missed or delayed wound-care follow-up appointment, delaying identification of a developing problem',
+        where:'Wherever follow-up wound-care appointments take place',
+        why:'Scheduled wound checks catch problems early and confirm healing is progressing as expected — missing them removes an important safety checkpoint.',
+        how:'Keep all wound-related follow-up appointments on the personalised cheat sheet with dates, and arrange transport or support in advance so mobility limitations do not become a reason to skip.',
+        measurement:'No numeric standard — keep every scheduled wound-care appointment; contact the clinic promptly to reschedule if genuinely unavoidable.',
+        example:'Arranging a lift to the suture-removal appointment in advance removes mobility as a reason the appointment might otherwise be missed.',
+        tip:'Add wound-care appointments to the cheat sheet the moment they are scheduled, not later when they might be forgotten.' },
+
+      { id:'ir23', num:'IR23', risk:'low', title:'Wound-Care Supplies Within Reach for Solo Recovery',
+        who:'Anyone managing dressing changes with limited mobility and limited assistance',
+        what:'Wound-care supplies stored somewhere that requires bending, reaching, or extra mobility to access',
+        where:'Storage location for wound-care supplies',
+        why:'If reaching supplies is itself difficult or risky, dressing changes may be delayed or rushed — positioning them accessibly supports consistent, unhurried care.',
+        how:'Store wound-care supplies at a comfortable height and location that does not require bending, climbing, or reaching that conflicts with current mobility restrictions.',
+        measurement:'No numeric standard — position supplies to be reached without bending or overreaching given current mobility limits.',
+        example:'Moving wound-care supplies from a low bathroom cupboard to a countertop makes solo dressing changes noticeably easier and safer.',
+        tip:'Set up the wound-care station once, thoughtfully, rather than reaching for whatever is nearby each time.' },
+
+      { id:'ir24', num:'IR24', risk:'medium', title:'Pets and Wound Sites Kept Appropriately Separate',
+        who:'Households with pets and a healing wound',
+        what:'Pets licking, scratching, or resting directly on a healing wound or dressing',
+        where:'Wherever the person recovering rests or sleeps',
+        why:'Pet contact with an open or healing wound carries an infection risk that is easy to overlook amid the comfort pets can otherwise provide during recovery.',
+        how:'Keep pets away from direct contact with the wound or dressing, and consider a barrier or a temporary adjusted sleeping arrangement if a pet normally sleeps close by.',
+        measurement:'No numeric standard — prevent any direct pet contact with the wound or dressing itself.',
+        example:'Adjusting where the family dog rests during nap time keeps a comforting presence nearby without direct contact with the healing wound.',
+        tip:'This is about the wound specifically, not the pet generally — most other everyday contact and comfort can continue as normal.' },
+
+      { id:'ir25', num:'IR25', risk:'low', title:'Scar and Healed-Wound Care Once Cleared',
+        who:'Anyone whose wound has progressed to the healed or scarring stage',
+        what:'No guidance followed for scar care once active wound healing has finished',
+        where:'The healed wound site',
+        why:'Appropriate scar care, once medically cleared to begin, can support comfortable healing and skin health, though it is a lower-priority step than active wound management.',
+        how:'Ask the medical team when scar care (such as gentle massage or specific products) can safely begin, and follow their specific guidance rather than starting early or using unrecommended products.',
+        measurement:'No numeric standard — begin any scar care only once explicitly cleared by the medical team.',
+        example:'Waiting for explicit clearance before starting scar massage avoids disturbing a wound that looks healed on the surface but is not yet fully closed underneath.',
+        tip:'This step can wait — active wound safety always takes priority over scar appearance in the early weeks.' },
+
+      { id:'ir26', num:'IR26', risk:'medium', title:'Sun Protection for Healing and Recently Healed Skin',
+        who:'Anyone with a wound or scar exposed to sunlight during recovery',
+        what:'Sun exposure on healing or recently healed skin, which can affect scarring and skin sensitivity',
+        where:'Any wound or scar site exposed to daylight',
+        why:'Healing and recently healed skin is often more sensitive to sun exposure, and protecting it supports more comfortable healing and skin appearance over time.',
+        how:'Keep the wound or fresh scar covered or shaded from direct sun exposure, and ask the medical team when and how sun protection products can be safely introduced.',
+        measurement:'No numeric standard — keep the healing area covered or shaded from direct sun until specifically cleared otherwise.',
+        example:'Covering a fresh scar with light clothing during a warm-weather walk avoids unnecessary sun exposure during the most sensitive healing phase.',
+        tip:'Loose, breathable clothing is usually simpler and more comfortable than sunscreen directly on a still-healing area — confirm the right approach with the medical team.' },
+
+      { id:'ir27', num:'IR27', risk:'critical', title:'Knowing When a Wound Concern Needs Urgent Attention',
+        who:'Everyone involved in wound care during recovery',
+        what:'Uncertainty about which wound changes are normal healing versus which require an urgent call or emergency attention',
+        where:'Anywhere the wound is being monitored',
+        why:'Recognising the difference between expected healing changes and a genuine red flag protects against both unnecessary worry and dangerous delay.',
+        how:'Confirm with the medical team, in writing if possible, exactly which specific signs mean "call now" versus "mention at the next appointment," and keep this on the personalised cheat sheet.',
+        measurement:'Recognised guidance: fever, spreading redness, significant new swelling, foul odour, or a wound reopening generally warrant a prompt call — confirm the specific list for this wound with the medical team.',
+        example:'Having a clear, written "call now versus wait" list on the cheat sheet gives a caregiver confidence to act quickly instead of hesitating during an uncertain moment.',
+        tip:'When genuinely unsure whether something is urgent, call and ask — this is never an overreaction with a healing wound.' },
+
+      { id:'ir28', num:'IR28', risk:'low', title:'A Calm, Consistent Wound-Care Routine',
+        who:'The whole household supporting the person recovering',
+        what:'Wound care that feels rushed, anxious, or inconsistent from one day to the next',
+        where:'Wherever wound care takes place',
+        why:'A calm, predictable wound-care routine reduces stress for everyone involved and makes it easier to notice genuine changes against a consistent baseline.',
+        how:'Choose a consistent time and setting for dressing changes where possible, and approach the routine calmly rather than as a dreaded task to rush through.',
+        measurement:'No numeric standard — aim for consistency in timing and approach, adjusted only as medically instructed.',
+        example:'Choosing the same quiet time each morning for a dressing change turns a once-anxious task into a steady, manageable part of the day.',
+        tip:'A calm caregiver often helps the person recovering feel calmer too — if you are anxious about a dressing change, it is fine to ask another support person to help until confidence builds.' }
+    ]
+  },
+  {
+    id: 3, name: 'Medication & Pain Management', icon: '💊',
+    desc: '14 checks covering dosing schedules, safe storage, opioid safety awareness, interaction checks and avoiding under- or over-medicating.',
+    checks: [
+      { id:'ir29', num:'IR29', risk:'critical', title:'Pain Medication Dosing Schedule Followed Exactly',
+        who:'Anyone taking prescribed pain medication during recovery',
+        what:'Taking pain medication earlier, later, more often, or in higher doses than prescribed',
+        where:'Wherever medication is taken and stored',
+        why:'Pain medication schedules, particularly for stronger prescriptions, are set to balance effective pain control with safety — deviating from them risks both inadequate pain relief and medication-related harm.',
+        how:'Follow the exact dosing schedule and maximum daily amount given by the prescriber, use a written or app-based log to track timing, and never combine with additional over-the-counter pain relief without confirming it is safe to do so.',
+        measurement:'No numeric standard — follow the specific dose, frequency and maximum daily amount given by the prescriber for this medication.',
+        example:'A simple paper log by the bed prevents an accidental early dose caused by genuinely forgetting the previous one was taken only three hours earlier.',
+        tip:'Set a phone alarm for each dose in the first week, when pain and grogginess make it easiest to lose track of timing.' },
+
+      { id:'ir30', num:'IR30', risk:'critical', title:'Opioid Safety Awareness, If Prescribed',
+        who:'Anyone prescribed opioid pain medication after injury or surgery',
+        what:'A lack of awareness of the specific risks — sedation, slowed breathing, dependency risk, and dangerous interactions — that come with opioid medication',
+        where:'Wherever opioid medication is stored, taken and monitored',
+        why:'Opioid medications carry specific, serious risks that differ from other pain relief, and clear awareness of these risks supports safer, time-limited use as intended by the prescriber.',
+        how:'Ask the prescriber directly about the specific risks, safe combination limits (especially with alcohol or sedatives), signs of an adverse reaction, and the plan for tapering off as pain decreases.',
+        measurement:'Recognised guidance: WHO Medication Without Harm highlights opioid-related harm as a significant, preventable risk category — always follow prescriber-specific dosing and duration limits exactly.',
+        example:'Asking directly about the tapering plan at the first follow-up appointment gives the family a clear, shared understanding of how long opioid use is expected to continue.',
+        tip:'If pain is not adequately controlled or opioid use is lasting longer than initially expected, raise this proactively with the prescriber rather than simply continuing.' },
+
+      { id:'ir31', num:'IR31', risk:'critical', title:'Medication Stored Securely and Out of Reach of Others',
+        who:'Every household with children, guests, or anyone else who could access medication accidentally',
+        what:'Pain medication left accessible on a counter or bedside table, risking accidental access by a child or another household member',
+        where:'Bedroom, kitchen, and any location medication is kept',
+        why:'Pain medications, particularly opioids, pose a serious risk if accessed accidentally by a child or anyone else in the household, and secure storage is a simple, essential safeguard.',
+        how:'Store all pain medication in a locked box or cabinet, out of sight and reach, especially in any household with children or regular visitors.',
+        measurement:'Recognised guidance: store all prescription pain medication locked and out of reach, particularly opioid medications.',
+        example:'Moving pain medication into a small locked box on a high shelf removes a risk that had not been considered while focused on recovery itself.',
+        tip:'Choose a storage solution that is still quick and easy for the person recovering to access themselves when needed — security should not create a new mobility barrier.' },
+
+      { id:'ir32', num:'IR32', risk:'high', title:'Medication Interactions Checked Before Adding Anything New',
+        who:'Anyone taking multiple medications during recovery',
+        what:'Adding a new over-the-counter medication, supplement, or herbal remedy without checking for interactions with prescribed recovery medication',
+        where:'Wherever medication decisions are made',
+        why:'Interactions between pain medication and other substances — including common over-the-counter products — can reduce effectiveness or cause harm, and are easy to overlook when reaching for something familiar.',
+        how:'Check with a pharmacist or the prescribing team before adding any new medication, supplement, or herbal product, even ones normally considered routine.',
+        measurement:'No numeric standard — confirm every addition with a pharmacist or prescriber, regardless of how minor it seems.',
+        example:'A pharmacist flags an interaction between a common over-the-counter cold remedy and a prescribed pain medication, preventing an unplanned side effect.',
+        tip:'Keep the full current medication list on the personalised cheat sheet so a pharmacist can check the complete picture quickly.' },
+
+      { id:'ir33', num:'IR33', risk:'medium', title:'Avoiding Under-Medicating Out of Caution',
+        who:'Anyone hesitant to take prescribed pain medication as directed',
+        what:'Deliberately under-taking prescribed pain medication out of fear of dependency or side effects, leading to poorly controlled pain that slows recovery',
+        where:'Throughout the recovery period',
+        why:'Poorly controlled pain can itself slow healing, reduce mobility and sleep, and increase the risk of complications — appropriate, prescribed use of pain relief supports recovery rather than undermining it.',
+        how:'Take medication as prescribed, particularly in the early days when pain control supports mobility and healing, and raise concerns about dependency directly with the prescriber rather than silently under-dosing.',
+        measurement:'No numeric standard — follow the prescribed schedule; discuss any concerns about dosage or duration directly with the prescriber.',
+        example:'Raising a concern about opioid use directly with the prescriber leads to an earlier, planned switch to a non-opioid alternative rather than simply under-taking the prescribed dose.',
+        tip:'Concerns about medication are valid and worth raising directly — the solution is a conversation with the prescriber, not silent under-dosing.' },
+
+      { id:'ir34', num:'IR34', risk:'medium', title:'A Simple Pain and Medication Log',
+        who:'Anyone tracking pain levels and medication use during recovery',
+        what:'No record of pain levels or medication timing, making it hard to spot patterns or communicate clearly at follow-up appointments',
+        where:'Kept with the personalised cheat sheet',
+        why:'A simple log helps identify whether pain is trending in the expected direction, supports accurate follow-up conversations, and reduces the risk of missed or doubled doses.',
+        how:'Keep a brief daily note of pain level, medication taken and timing, and bring it to follow-up appointments to support an accurate conversation about progress.',
+        measurement:'No numeric standard — a few lines per day tracking pain level and medication timing is generally sufficient.',
+        example:'A simple log reveals that pain consistently spikes in the evening, prompting the prescriber to adjust the timing of a dose rather than the amount.',
+        tip:'Keep the log brief and consistent — a quick daily note is more useful than detailed notes kept only occasionally.' },
+
+      { id:'ir35', num:'IR35', risk:'low', title:'Constipation Awareness With Certain Pain Medications',
+        who:'Anyone taking opioid or certain other pain medications',
+        what:'Constipation, a common and often under-discussed side effect of many pain medications, going unmanaged',
+        where:'Throughout the medication period',
+        why:'Constipation from pain medication is common, generally manageable, and worth addressing proactively rather than as an afterthought, as it can add discomfort during an already difficult recovery period.',
+        how:'Ask the prescriber or pharmacist proactively about managing this side effect, including diet, hydration, and any recommended over-the-counter support.',
+        measurement:'Recognised guidance: adequate fluid intake (roughly 1.5-2 litres, or 50-68 fl oz, daily unless otherwise advised) and fibre intake support management alongside any recommended product.',
+        example:'Asking about this proactively at the first appointment means a simple management plan is already in place before the side effect becomes uncomfortable.',
+        tip:'This is a common, expected side effect worth asking about directly — there is no need to feel it is a minor complaint not worth mentioning.' },
+
+      { id:'ir36', num:'IR36', risk:'medium', title:'Sedation Awareness and Fall Risk After Doses',
+        who:'Anyone taking pain medication that causes drowsiness or sedation',
+        what:'Attempting to move, use stairs, or use a mobility aid shortly after a dose that causes drowsiness, increasing fall risk',
+        where:'Throughout the home, particularly after each dose',
+        why:'Sedating pain medication can affect balance, reaction time, and alertness in ways that compound existing mobility challenges during recovery.',
+        how:'Plan movement and mobility-aid use around medication timing where possible, and have support present for movement in the period shortly after a dose known to cause drowsiness.',
+        measurement:'No numeric standard — allow extra caution and, where possible, support for movement in the hour or two following a sedating dose.',
+        example:'Waiting for a supported bathroom trip rather than attempting it alone shortly after a dose avoids a fall during a genuinely higher-risk window.',
+        tip:'If a dose reliably causes drowsiness, plan the next movement or transfer around that window rather than fighting through it alone.' },
+
+      { id:'ir37', num:'IR37', risk:'low', title:'Alcohol Avoided With Pain Medication',
+        who:'Anyone taking prescribed pain medication, particularly opioids or sedatives',
+        what:'Alcohol combined with pain medication, significantly increasing sedation and interaction risk',
+        where:'Wherever alcohol might normally be consumed',
+        why:'Alcohol combined with many pain medications, especially opioids, significantly increases the risk of dangerous sedation and other interactions.',
+        how:'Avoid alcohol entirely while taking prescribed pain medication unless the prescriber has specifically confirmed it is safe, and store any household alcohol out of easy reach if needed.',
+        measurement:'No numeric standard — avoid alcohol entirely unless explicitly confirmed safe with the current medication by the prescriber.',
+        example:'Choosing a non-alcoholic drink at a family gathering during recovery avoids an unnecessary interaction risk during a genuinely vulnerable period.',
+        tip:'This is a firm, simple rule worth following exactly rather than judging case by case — confirm any exception directly with the prescriber first.' },
+
+      { id:'ir38', num:'IR38', risk:'medium', title:'Non-Medication Pain Relief Used Alongside Prescribed Care',
+        who:'Anyone managing pain during recovery',
+        what:'Relying solely on medication for pain relief without incorporating other recommended, non-medication approaches',
+        where:'Throughout the recovery period',
+        why:'Non-medication approaches — positioning, ice or heat as advised, rest, and gentle recommended movement — can meaningfully support comfort alongside medication, sometimes reducing how much medication is needed.',
+        how:'Ask the medical or physiotherapy team which non-medication approaches (positioning, ice, heat, gentle movement) are appropriate for this specific injury, and use them alongside the prescribed medication schedule.',
+        measurement:'No numeric standard — follow specific non-medication recommendations from the physiotherapy or medical team for this injury.',
+        example:'Using recommended ice application alongside the prescribed schedule noticeably reduces how much additional pain relief is needed in the evenings.',
+        tip:'Ask specifically what non-medication comfort measures apply to this injury — advice varies significantly and generic tips are not always appropriate.' },
+
+      { id:'ir39', num:'IR39', risk:'low', title:'Medication List Updated as Doses Change',
+        who:'Anyone whose medication or dosage changes during recovery',
+        what:'An outdated medication list that no longer matches what is actually being taken',
+        where:'On the personalised cheat sheet',
+        why:'As pain decreases and medication tapers or changes, keeping the list current ensures anyone assisting with care — or responding to an emergency — has accurate information.',
+        how:'Update the medication list on the personalised cheat sheet immediately whenever a dose, medication, or frequency changes.',
+        measurement:'Update the medication list within a day of any change to dose, medication, or frequency.',
+        example:'Updating the cheat sheet the same day a dose is reduced means a visiting relative provides accurate information if ever needed in an emergency.',
+        tip:'Treat the medication list as a living document that gets updated the moment anything changes, not saved for a later tidy-up.' },
+
+      { id:'ir40', num:'IR40', risk:'medium', title:'Safe Disposal of Leftover Pain Medication',
+        who:'Every household with leftover pain medication once it is no longer needed',
+        what:'Leftover prescription pain medication kept in the home after recovery, unnecessarily extending the period of risk',
+        where:'Wherever medication has been stored',
+        why:'Leftover pain medication, particularly opioids, sitting unused in a home increases the risk of misuse, accidental access, or diversion long after it is medically needed.',
+        how:'Return unused medication to a pharmacy for safe disposal once no longer needed, rather than keeping it in the home indefinitely or disposing of it in household waste.',
+        measurement:'No numeric standard — return leftover medication for safe disposal promptly once no longer clinically needed.',
+        example:'Returning unused pain medication to the pharmacy once recovery is complete removes it as a risk for the rest of the household going forward.',
+        tip:'Do this disposal step actively rather than letting leftover medication sit in a cabinet indefinitely out of habit.' },
+
+      { id:'ir41', num:'IR41', risk:'medium', title:'A Plan for Tapering Off Pain Medication',
+        who:'Anyone approaching the end of a prescribed pain medication course',
+        what:'No clear plan for reducing pain medication as healing progresses, leading to either an abrupt stop or an unnecessarily extended course',
+        where:'Discussed with the prescriber ahead of the expected tapering point',
+        why:'A planned, gradual reduction — where medically appropriate — supports comfort while avoiding both an abrupt stop and unnecessarily prolonged use.',
+        how:'Ask the prescriber early in the recovery for the expected tapering timeline, and revisit this plan at each follow-up appointment as healing progresses.',
+        measurement:'No numeric standard — follow the specific tapering plan given by the prescriber for this medication and injury.',
+        example:'A planned, gradual reduction discussed in advance avoids both unnecessary discomfort from stopping too soon and unnecessarily prolonged medication use.',
+        tip:'Raise the tapering question proactively rather than waiting for the prescriber to bring it up — it keeps the plan clear for everyone involved.' },
+
+      { id:'ir42', num:'IR42', risk:'low', title:'Emotional Response to Pain Medication Acknowledged',
+        who:'The whole household supporting someone managing pain medication',
+        what:'Frustration, worry, or stigma around pain medication use going unacknowledged, adding unnecessary stress to recovery',
+        where:'Throughout the household',
+        why:'Pain medication, especially opioids, can carry emotional weight and worry beyond the physical risks — acknowledging this openly supports a calmer, more honest recovery experience for everyone.',
+        how:'Talk openly as a household about any worries around medication use, treat the topic without shame or judgement, and direct genuine concerns to the prescriber rather than letting them go unspoken.',
+        measurement:'No numeric standard — this is a practice of open communication, not a metric.',
+        example:'An open family conversation about medication worries leads to a helpful, reassuring call with the prescriber rather than lingering unspoken anxiety.',
+        tip:'It is normal to have mixed feelings about pain medication — the goal is open conversation with the prescriber, not silence in either direction.' }
+    ]
+  },
+  {
+    id: 4, name: 'Bathing, Toileting & Personal Care Safety', icon: '🚿',
+    desc: '14 checks covering shower seats, grab bars and avoiding falls during the most vulnerable daily moments — bathing and toileting.',
+    checks: [
+      { id:'ir43', num:'IR43', risk:'critical', title:'Shower Seat or Bath Board Fitted and Stable',
+        who:'Anyone with reduced mobility, balance, or weight-bearing during recovery',
+        what:'Standing unsupported in a wet shower or bath, one of the highest-risk moments of the entire day',
+        where:'Bath and shower',
+        why:'Wet, slippery surfaces combined with reduced mobility make bathing one of the single riskiest daily activities during recovery — a stable seat removes the need to balance while wet and unsteady.',
+        how:'Install a secure, appropriately weight-rated shower seat or bath board before it is needed, and check it is stable and correctly positioned before each use.',
+        measurement:'Recognised guidance: confirm the seat or board is rated for the user\'s weight and is fixed or braced so it cannot slide during use.',
+        example:'Installing a shower seat before returning home from hospital means it is ready and tested before it is actually needed.',
+        tip:'Test the seat yourself, dry and empty, before the first real use — check it does not wobble or slide under weight.' },
+
+      { id:'ir44', num:'IR44', risk:'critical', title:'Grab Bars Installed Beside Toilet and in Bath/Shower',
+        who:'Anyone using the bathroom during recovery',
+        what:'No secure handhold during the moments of transfer that are hardest to balance through — sitting down, standing up, and stepping in or out',
+        where:'Beside the toilet and within the bath or shower',
+        why:'Grab bars provide a stable, weight-bearing handhold exactly at the moments of greatest instability, and are one of the most effective single changes for bathroom safety.',
+        how:'Install securely wall-fixed grab bars (not suction-mounted) beside the toilet and within the bath or shower, positioned for how they will actually be used during transfers.',
+        measurement:'Grab bars should be fixed into wall studs or with appropriate load-rated anchors to support full body weight.',
+        example:'A wall-mounted grab bar beside the toilet gives a stable handhold during the sit-to-stand transfer, which had previously relied on an unstable towel rail.',
+        tip:'Never rely on a towel rail or soap dish as a grab point — they are not built to bear weight.' },
+
+      { id:'ir45', num:'IR45', risk:'high', title:'Non-Slip Mat in the Bath, Shower and Just Outside It',
+        who:'Anyone bathing or showering during recovery',
+        what:'A wet, slippery surface underfoot in the bath, shower, or the floor just outside it',
+        where:'Bath floor, shower floor, and the immediately surrounding floor area',
+        why:'A non-slip surface significantly reduces the risk of a slip during the wettest, most vulnerable part of personal care.',
+        how:'Add a securely fitted non-slip mat inside the bath or shower, and a non-slip bath mat on the floor immediately outside it, checking both remain in good, ungripped condition.',
+        measurement:'Recognised guidance: use a securely fitted, non-slip surface both inside and immediately outside the bath or shower.',
+        example:'Adding a textured non-slip mat inside the shower noticeably reduces hesitation and uncertainty during the first solo shower after surgery.',
+        tip:'Replace a non-slip mat once its grip texture wears smooth — it stops being effective before it looks obviously worn.' },
+
+      { id:'ir46', num:'IR46', risk:'high', title:'Toileting Assistance Planned for Reduced Mobility',
+        who:'Anyone with reduced mobility affecting toilet transfers',
+        what:'A toilet transfer attempted without appropriate support, aids, or planning, risking a fall during a private, often rushed moment',
+        where:'Bathroom toilet area',
+        why:'Toileting is a frequent daily activity, and unplanned or rushed transfers here carry meaningful fall risk, particularly overnight or when privacy makes people reluctant to call for help.',
+        how:'Consider a raised toilet seat or frame if recommended for the specific injury, and agree in advance a clear, comfortable way to call for help if needed, without embarrassment.',
+        measurement:'No numeric standard — confirm any recommended toileting aid with the physiotherapy team based on the specific injury.',
+        example:'A raised toilet seat, recommended after a hip surgery, removes strain from a low sit-to-stand transfer that would otherwise be attempted several times a day.',
+        tip:'Agree on a simple, low-key way to call for help before it is needed — a small bell or a phone within reach removes the awkwardness in the moment.' },
+
+      { id:'ir47', num:'IR47', risk:'medium', title:'Water Temperature Checked Before Entering',
+        who:'Anyone with reduced sensation or reaction time during recovery',
+        what:'Water that is too hot, unnoticed until contact due to reduced sensation, distraction, or medication effects',
+        where:'Bath and shower',
+        why:'Pain medication and reduced mobility can both affect how quickly a person notices water is too hot, increasing scald risk during an already vulnerable activity.',
+        how:'Check water temperature with a hand or a thermometer before entering the bath or shower, and consider setting a home water heater to a safer maximum temperature during recovery.',
+        measurement:'Recognised guidance: keep hot water supply at or below roughly 49°C (120°F) to reduce scald risk, and always test before entering.',
+        example:'Testing the water with a hand before stepping in catches an unexpectedly hot setting before it causes a scald.',
+        tip:'If a caregiver is assisting, have them test and confirm the temperature rather than relying on the recovering person\'s own reduced sensation.' },
+
+      { id:'ir48', num:'IR48', risk:'medium', title:'Personal Care Items Within Easy Reach',
+        who:'Anyone with reduced mobility or reach during bathing and personal care',
+        what:'Soap, shampoo, or other personal care items positioned too high, low, or far to reach without bending, twisting, or overreaching',
+        where:'Bath and shower area',
+        why:'Reaching or bending unexpectedly during a wet, unstable moment is a common and avoidable cause of falls — positioning items thoughtfully removes the need.',
+        how:'Reposition personal care items to a comfortable, reachable height and location before they are needed, using a shower caddy or shelf within easy arm\'s reach.',
+        measurement:'No numeric standard — position items to be reached without bending, twisting, or overreaching from the seated or standing position used.',
+        example:'Moving shampoo to a shower caddy at shoulder height removes the need for an unstable reach down to a low shelf.',
+        tip:'Set this up once in advance, seated or standing exactly where the person will actually be during use, not just visually from outside the shower.' },
+
+      { id:'ir49', num:'IR49', risk:'medium', title:'A Consistent, Unhurried Bathing Routine',
+        who:'Anyone recovering with reduced mobility',
+        what:'Rushing through bathing due to time pressure, embarrassment, or fear of needing help',
+        where:'Bathroom',
+        why:'A rushed bathing routine increases the chance of an unsafe movement — allowing enough time supports both safety and dignity during personal care.',
+        how:'Build enough time into the day for an unhurried bathing routine, and normalise needing extra time or assistance as a temporary, expected part of recovery rather than something to rush through out of embarrassment.',
+        measurement:'No numeric standard — allow noticeably more time than usual for bathing during early recovery.',
+        example:'Scheduling bathing for a quiet part of the day, without competing demands, removes the pressure that had previously led to rushed, unsafe movements.',
+        tip:'Frame the extra time and any needed assistance as a normal, temporary part of recovery — most people need more support during this phase than they expect.' },
+
+      { id:'ir50', num:'IR50', risk:'high', title:'A Plan for Calling for Help If a Fall Occurs',
+        who:'Every household supporting recovery',
+        what:'No plan for what happens if a fall occurs during bathing, one of the more private and isolated moments of the day',
+        where:'Bathroom',
+        why:'Bathrooms are often the room where a person is most alone and hardest to reach quickly if something goes wrong — having a plan removes critical delay in a genuine emergency.',
+        how:'Keep a phone within reach during bathing, agree on a check-in signal or timeframe with another household member, and know in advance how emergency help would be summoned if genuinely needed.',
+        measurement:'No numeric standard — confirm a specific plan (phone location, check-in method) before bathing alone begins.',
+        example:'Keeping a phone in a waterproof pouch within reach of the shower means help could be called immediately if something did go wrong.',
+        tip:'Agree on a simple check-in method with a household member for the first few weeks of solo bathing, until confidence is well established.' },
+
+      { id:'ir51', num:'IR51', risk:'low', title:'Bathroom Flooring Kept Dry Between Uses',
+        who:'Every household member using a shared bathroom during recovery',
+        what:'Water left on the bathroom floor after a previous use, creating a slip hazard for the next person',
+        where:'Bathroom floor',
+        why:'A shared bathroom used by multiple household members means water left behind by one person becomes a hazard for the next, particularly one recovering with reduced balance.',
+        how:'Wipe the floor dry after each use, and consider a simple household reminder or sign during the recovery period so everyone shares this responsibility.',
+        measurement:'No numeric standard — dry any standing water from the bathroom floor immediately after each use.',
+        example:'A quick floor wipe after each shower becomes a small household habit that removes a hazard for whoever uses the bathroom next.',
+        tip:'A small, visible reminder near the bathroom door can help the whole household remember this new habit during the recovery period.' },
+
+      { id:'ir52', num:'IR52', risk:'low', title:'Dignity Maintained During Assisted Personal Care',
+        who:'Anyone requiring assistance with bathing or personal care during recovery',
+        what:'Assisted personal care carried out in a way that feels rushed or exposing, even when physically safe',
+        where:'Bathroom, during assisted bathing or dressing',
+        why:'How assistance is given matters as much as whether it happens — a calm, respectful approach preserves dignity during what can otherwise feel like an uncomfortable adjustment.',
+        how:'Explain each step before doing it, keep the person covered as much as practically possible, and let them do what they safely can themselves even if it takes longer.',
+        measurement:'No numeric standard — dignity in assisted care is supported by clear communication and preserving as much self-directed participation as is safely possible.',
+        example:'Talking through each step calmly during an assisted shower transforms what initially felt awkward into a routine both people are comfortable with.',
+        tip:'If assisted personal care feels awkward at first, that is normal — clear communication usually eases it faster than either person expects.' },
+
+      { id:'ir53', num:'IR53', risk:'medium', title:'Adaptive Equipment Used as Recommended',
+        who:'Anyone provided with adaptive personal-care equipment during recovery',
+        what:'Provided adaptive equipment (long-handled sponges, sock aids, reachers) left unused because it feels unfamiliar or unnecessary',
+        where:'Wherever personal care takes place',
+        why:'Adaptive equipment is specifically recommended to reduce risky bending, twisting, or overreaching during personal care — leaving it unused removes a safety benefit it was designed to provide.',
+        how:'Use any adaptive equipment provided or recommended by the occupational therapy team as instructed, and ask for a demonstration if it feels unfamiliar rather than avoiding it.',
+        measurement:'No numeric standard — use recommended adaptive equipment as instructed, particularly where it avoids bending, twisting or overreaching.',
+        example:'A brief demonstration of a long-handled sponge from an occupational therapist makes it feel natural within a couple of uses.',
+        tip:'Ask for a hands-on demonstration of any new equipment rather than guessing how it is meant to be used.' },
+
+      { id:'ir54', num:'IR54', risk:'low', title:'Toiletries and Towels Positioned to Avoid Extra Trips',
+        who:'Anyone with limited mobility navigating the bathroom routine',
+        what:'Towels, robes, or clean clothes stored somewhere that requires an extra, unsupported trip after bathing',
+        where:'Bathroom and the route immediately outside it',
+        why:'An unplanned extra trip while wet, cold, and off-balance after bathing is an avoidable moment of added risk.',
+        how:'Position a towel, robe and change of clothes within easy reach of where bathing finishes, set up in advance rather than fetched afterward.',
+        measurement:'No numeric standard — position towels and clothing within reach of the point bathing finishes, set up before starting.',
+        example:'Hanging a robe on a hook right beside the shower removes the need for a cold, wet, unsupported walk to the bedroom afterward.',
+        tip:'Set this up as part of the same routine as preparing the bathroom itself, not as an afterthought once bathing is finished.' },
+
+      { id:'ir55', num:'IR55', risk:'low', title:'Recognising When Bathing Support Can Safely Reduce',
+        who:'Anyone regaining confidence and mobility during recovery',
+        what:'Continuing full assisted bathing support well past the point it is genuinely still needed, or reducing it too soon before it is safe to do so',
+        where:'Bathroom',
+        why:'As recovery progresses, safely reducing assistance in stages supports independence, but this should track actual ability rather than either impatience or over-caution.',
+        how:'Reassess bathing support needs periodically, ideally with input from the physiotherapy team at follow-up appointments, and adjust gradually in one step at a time rather than all at once.',
+        measurement:'No numeric standard — reassess support level at each follow-up appointment or when confidence and mobility noticeably change.',
+        example:'A physiotherapist confirms it is safe to move from full assistance to a supervised solo shower, giving both the person recovering and their caregiver confidence in the change.',
+        tip:'Confirm any reduction in support with the physiotherapy team rather than deciding unilaterally in either direction.' },
+
+      { id:'ir56', num:'IR56', risk:'medium', title:'Emergency Contact Information Accessible From the Bathroom',
+        who:'Every household supporting recovery',
+        what:'Emergency contact information not accessible from the room where a fall or emergency is most likely to happen alone',
+        where:'Bathroom, or immediately accessible from it',
+        why:'If something does go wrong during bathing, having emergency information immediately accessible — rather than in another room — removes a critical delay.',
+        how:'Keep a waterproof copy of key emergency contacts, or a phone with them saved, within reach of the bathroom during the recovery period.',
+        measurement:'No numeric standard — emergency contact access should not require leaving the bathroom during an emergency.',
+        example:'A phone kept in a waterproof case within reach of the shower means help could be called immediately without needing to leave the room first.',
+        tip:'Route all emergency numbers through the personalised cheat sheet in this checklist so they stay current and accessible everywhere they are needed.' }
+    ]
+  },
+  {
+    id: 5, name: 'Home Layout & Fall Prevention During Recovery', icon: '🏠',
+    desc: '14 checks covering decluttering, temporary single-level living, furniture and chair height, and lighting along walking routes.',
+    checks: [
+      { id:'ir57', num:'IR57', risk:'critical', title:'Main Living Area Decluttered for Mobility Aid Use',
+        who:'Anyone using a mobility aid during recovery',
+        what:'Furniture, cables, or objects narrowing the paths a mobility aid needs to travel through daily living spaces',
+        where:'Living room, bedroom, and the routes between them',
+        why:'A cluttered path increases trip and collision risk substantially, particularly for someone still learning to manoeuvre a new mobility aid.',
+        how:'Widen and clear the most-used walking routes, temporarily remove low furniture, floor lamps and loose objects from the direct path, and keep frequently used items within easy reach rather than requiring a detour.',
+        measurement:'Aim for a clear walking path at least 90cm (35 in) wide along all frequently used routes.',
+        example:'Temporarily rearranging the living room to create one clear, wide path removes several near-miss obstacles noticed only after starting to use crutches.',
+        tip:'Walk the planned routes with the actual mobility aid before it is genuinely needed, not just by eye.' },
+
+      { id:'ir58', num:'IR58', risk:'high', title:'Temporary Single-Level Living Considered',
+        who:'Anyone with significant mobility restrictions, particularly involving stairs',
+        what:'Relying on repeated stair use throughout recovery when a temporary single-level setup would be significantly safer',
+        where:'Wherever essential daily living currently requires stairs',
+        why:'Reducing the number of times stairs must be navigated each day meaningfully reduces cumulative fall risk during the highest-risk early recovery period.',
+        how:'Set up a temporary sleeping and living space on one level if stairs are a significant barrier, keeping bed, bathroom access, and essentials as close together as possible.',
+        measurement:'No numeric standard — consider single-level living for any period where stairs are medically restricted or genuinely difficult.',
+        example:'Setting up a temporary bed in a ground-floor room for the first two weeks removes the need for repeated risky stair trips during the most fragile recovery period.',
+        tip:'This does not need to be elaborate — a simple, temporary setup for a few weeks is often enough to meaningfully reduce risk.' },
+
+      { id:'ir59', num:'IR59', risk:'critical', title:'Loose Rugs and Mats Removed or Secured',
+        who:'Every household during the recovery period',
+        what:'Rugs or mats that slip, bunch, or create a trip edge underfoot',
+        where:'Hallways, doorways, and living areas',
+        why:'Loose rugs are one of the most common and easily fixed fall hazards, and the risk increases further with any change in gait, balance, or mobility aid use.',
+        how:'Remove rugs and mats where possible during the recovery period, especially in hallways and doorways; where a rug must stay, secure it fully to the floor with non-slip underlay or tape along every edge.',
+        measurement:'Any rug edge that lifts more than a few millimetres underfoot should be secured or removed.',
+        example:'Temporarily rolling up a hallway runner removes a snag point that a walker had already caught on once.',
+        tip:'If in doubt, remove rather than secure — a bare, even floor is nearly always the safer choice during recovery.' },
+
+      { id:'ir60', num:'IR60', risk:'high', title:'Lighting Improved Along Frequently Walked Routes',
+        who:'Anyone navigating the home with reduced mobility, particularly at night',
+        what:'Dim or uneven lighting that makes it harder to see hazards clearly, especially along overnight routes',
+        where:'Hallways, stairs, and the bedroom-to-bathroom route',
+        why:'Good lighting is one of the most effective, low-cost fall-prevention measures, and becomes even more important when balance and gait are already affected.',
+        how:'Increase wattage or switch to brighter bulbs along frequently walked routes, and add night-lights along the bedroom-to-bathroom path for overnight use.',
+        measurement:'Recognised falls-prevention guidance: aim for even, glare-free lighting throughout walked routes, with night lighting of roughly 5-20 lux along overnight paths.',
+        example:'Adding a motion-sensor night-light along the hallway removes the need to fumble for a switch during a groggy overnight bathroom trip.',
+        tip:'Walk the home at night specifically to spot the dim areas a daytime check would miss.' },
+
+      { id:'ir61', num:'IR61', risk:'medium', title:'Chair and Bed Height Suited to Safe Sitting and Standing',
+        who:'Anyone with reduced leg strength, balance, or weight-bearing restrictions',
+        what:'Chairs or a bed that are too low or too soft, making standing up more difficult and less stable than necessary',
+        where:'Living room seating and bedroom',
+        why:'The sit-to-stand transition is a common moment of instability, and a chair or bed at an appropriate height with a firm surface makes this significantly safer and easier.',
+        how:'Choose or adapt seating so the knees are roughly level with or slightly below the hips when seated, add a firm cushion to raise low chairs if needed, and consider bed risers if the bed sits very low.',
+        measurement:'General guidance: seat height allowing feet to rest flat on the floor with knees at approximately 90 degrees or slightly more when seated.',
+        example:'Adding a firm cushion to a low favourite armchair makes standing up noticeably easier without needing to avoid the chair altogether.',
+        tip:'Test the chair or bed height yourself before relying on it — you will notice quickly if it feels unstable to rise from.' },
+
+      { id:'ir62', num:'IR62', risk:'medium', title:'Essentials Positioned Within Reach to Avoid Bending or Reaching',
+        who:'Anyone with movement or bending restrictions during recovery',
+        what:'Frequently used items stored somewhere that requires bending, twisting, or overreaching in ways that conflict with current restrictions',
+        where:'Kitchen, bedroom, and any frequently used storage',
+        why:'Certain injuries and surgeries come with specific bending or twisting restrictions, and reaching for a poorly positioned item is a common way these restrictions are unintentionally broken.',
+        how:'Move frequently needed items to a comfortable height that does not require bending, twisting, or overreaching, based on the specific restrictions given for this injury or surgery.',
+        measurement:'No numeric standard — position items according to the specific bending, lifting, or twisting restrictions given by the medical team.',
+        example:'Moving frequently used kitchen items from a low cupboard to counter height respects a hip-precaution restriction that would otherwise be broken several times a day without thinking.',
+        tip:'Confirm the specific movement restrictions for this injury before rearranging, as they vary significantly by surgery type.' },
+
+      { id:'ir63', num:'IR63', risk:'low', title:'Trip Hazards From Cables and Cords Reduced',
+        who:'Every household with lamps, chargers, or electrical appliances',
+        what:'Loose cables or cords crossing a walking path',
+        where:'Living room, bedroom, and hallways',
+        why:'Cables are a common and easily overlooked trip hazard, particularly along routes that are already carrying more risk due to a mobility aid or altered gait.',
+        how:'Route cables along walls using cable clips or covers rather than across open floor space, and consider wireless chargers or shorter cables where practical.',
+        measurement:'No cable should cross a walking path without being fully secured flat against the floor or rerouted along a wall.',
+        example:'Securing a lamp cord along the skirting board removes a snag hazard directly in the middle of the recovery bedroom.',
+        tip:'Do this check with a mobility aid in hand, not just by eye — a cable that looks fine on foot can still catch a crutch or wheel.' },
+
+      { id:'ir64', num:'IR64', risk:'medium', title:'Furniture Arranged for Stable Support While Walking',
+        who:'Anyone using nearby furniture as informal additional support while walking',
+        what:'Furniture that shifts, wobbles, or is positioned too far apart to provide a reliable, continuous support along a walking route',
+        where:'Living areas and hallways',
+        why:'Many people instinctively use nearby furniture as extra support while walking during recovery — arranging sturdy, stable furniture along common routes can create a genuinely safer path.',
+        how:'Arrange stable, heavy furniture (not on castors) along frequently walked routes at a comfortable spacing, and check that anything likely to be leaned on will not tip or slide.',
+        measurement:'No numeric standard — check by hand that any furniture along a walking route can bear a lean without moving.',
+        example:'Repositioning a solid bookcase slightly closer to a walking route gives a stable point to steady against between the bedroom and kitchen.',
+        tip:'Watch how movement actually happens through the home for a day before rearranging — the safest layout follows real habits, not an assumed ideal.' },
+
+      { id:'ir65', num:'IR65', risk:'low', title:'Outdoor Access Points Checked for Safety',
+        who:'Anyone using an outdoor entrance during recovery',
+        what:'Steps, uneven paving, or poor lighting at the entrance used most often during recovery',
+        where:'Front, back, or side entrance used regularly',
+        why:'Entrance points are used multiple times a day and often overlooked in an indoor-focused safety review, despite carrying real fall risk from steps and uneven surfaces.',
+        how:'Check the entrance used most often for step height, secure handrails if steps are present, and adequate lighting, and consider a temporary ramp if steps are a significant barrier.',
+        measurement:'No numeric standard — check the primary entrance specifically for step height, handrail presence, and lighting adequacy.',
+        example:'Adding a temporary handrail to two front steps removes a daily obstacle that had gone unaddressed while focusing on the interior of the home.',
+        tip:'Choose the entrance with the fewest steps as the primary one during recovery, even if it is not the usual front door.' },
+
+      { id:'ir66', num:'IR66', risk:'medium', title:'A Charged Phone Kept Within Reach Throughout the Home',
+        who:'Anyone spending significant time alone during recovery',
+        what:'A phone left in another room or out of reach, delaying the ability to call for help if something goes wrong',
+        where:'Wherever the person recovering spends time throughout the day',
+        why:'Falls and other emergencies can happen anywhere in the home, and a phone kept consistently within reach removes a critical delay in getting help.',
+        how:'Keep a charged phone within arm\'s reach at all times, moving it deliberately between rooms rather than leaving it in one fixed location.',
+        measurement:'No numeric standard — the phone should be within arm\'s reach in every room spent time in, not just the bedroom.',
+        example:'Making a habit of carrying the phone from room to room means it is always within reach if help is ever needed unexpectedly.',
+        tip:'A small crossbody bag or a lanyard can make carrying the phone easier while also using a mobility aid.' },
+
+      { id:'ir67', num:'IR67', risk:'low', title:'Temperature and Comfort of the Recovery Space Maintained',
+        who:'Anyone spending long periods resting during recovery',
+        what:'A recovery space that is too cold, too hot, or otherwise uncomfortable, affecting rest and healing',
+        where:'The main resting or sleeping area used during recovery',
+        why:'A comfortable environment supports better rest, and rest is a genuine, active part of recovery rather than simply time passing.',
+        how:'Keep the recovery space at a comfortable, consistent temperature, and check bedding and seating are genuinely comfortable for extended periods of rest.',
+        measurement:'Recognised guidance: a comfortable indoor temperature of roughly 18-24°C (64-75°F) supports comfortable rest for most people.',
+        example:'Adjusting the thermostat for the room used most during recovery noticeably improves sleep quality in the first weeks.',
+        tip:'Comfort during recovery is not a small detail — better rest genuinely supports better healing.' },
+
+      { id:'ir68', num:'IR68', risk:'low', title:'A Designated, Organised Recovery Station',
+        who:'Anyone spending extended time in one main resting area during recovery',
+        what:'Essentials scattered around the home rather than gathered within reach of the main resting spot',
+        where:'The main chair or bed used during recovery',
+        why:'A single, organised recovery station with medication, phone, water, remote controls and entertainment within reach reduces the number of times movement is attempted unnecessarily.',
+        how:'Set up one main recovery spot with everything regularly needed close at hand, refreshed daily so it consistently has what is needed.',
+        measurement:'No numeric standard — position frequently needed items within arm\'s reach of the main recovery spot.',
+        example:'Setting up a small side table with water, medication, phone and the remote control noticeably reduces unnecessary trips across the room.',
+        tip:'Refresh the recovery station each morning as part of the daily routine, rather than letting it gradually become disorganised.' },
+
+      { id:'ir69', num:'IR69', risk:'low', title:'Visitors Briefed on Home Layout Changes',
+        who:'Anyone visiting the home during the recovery period',
+        what:'Visitors unaware of temporary layout changes, furniture moved for safety, or areas to avoid',
+        where:'Throughout the home',
+        why:'Temporary changes made for safety can create confusion or accidental hazards for visitors unaware of them, and a brief heads-up avoids this easily.',
+        how:'Give visitors a quick heads-up about any temporary layout changes, mobility aid storage, or areas to be mindful of before they arrive or as they enter.',
+        measurement:'No numeric standard — a brief verbal heads-up to visitors is generally sufficient.',
+        example:'A quick text before a visit explaining that furniture has been rearranged prevents confusion when a visitor arrives.',
+        tip:'This is a small courtesy that prevents visitors from accidentally undoing a safety change, like moving furniture back "to be helpful."' },
+
+      { id:'ir70', num:'IR70', risk:'medium', title:'Layout Reviewed Again as Mobility Improves',
+        who:'Anyone whose mobility and confidence change over the course of recovery',
+        what:'A home layout set up for early, more restricted mobility left unchanged well after mobility has genuinely improved',
+        where:'Throughout the home',
+        why:'Recovery changes over weeks, and a layout review as mobility improves ensures safety measures still match current ability, neither over-restricting nor under-supporting.',
+        how:'Revisit the home layout at each follow-up appointment or noticeable improvement in mobility, adjusting furniture, aids, and routes to reflect genuine current ability.',
+        measurement:'No numeric standard — review layout at each follow-up appointment or significant change in mobility.',
+        example:'A layout review at the six-week follow-up confirms it is safe to return furniture to its usual position as mobility has genuinely improved.',
+        tip:'Confirm meaningful mobility improvements with the physiotherapy team before reversing any safety changes, rather than assuming based on how things feel.' }
+    ]
+  },
+  {
+    id: 6, name: 'Recovery Pacing, Mental Wellbeing & Follow-Up Care', icon: '📅',
+    desc: '14 checks covering pacing activity to avoid setbacks, spotting genuine complications early, the emotional toll of temporary dependence, and tracking follow-up care.',
+    checks: [
+      { id:'ir71', num:'IR71', risk:'high', title:'Activity Paced to Avoid Setbacks',
+        who:'Anyone recovering from injury or surgery',
+        what:'Doing too much too soon on a good day, causing pain, swelling, or a genuine setback that undoes recent progress',
+        where:'Throughout daily activity',
+        why:'Recovery often feels non-linear, and a good day can tempt overdoing it — pacing activity according to medical guidance, not just how a person feels in the moment, protects steady progress.',
+        how:'Follow the specific activity guidance given by the physiotherapy or medical team, increase activity gradually as instructed, and treat a good day as a sign to stay the course rather than to accelerate.',
+        measurement:'No numeric standard — follow the specific pacing and activity-increase guidance given by the physiotherapy team for this injury.',
+        example:'Sticking to the planned, gradual increase in walking distance, even on a day that feels strong, avoids a setback that a more ambitious walk might have caused.',
+        tip:'A good day is a sign recovery is on track, not a signal to skip ahead in the plan.' },
+
+      { id:'ir72', num:'IR72', risk:'high', title:'Distinguishing Normal Recovery Discomfort From a Genuine Complication',
+        who:'Everyone monitoring recovery, both the person recovering and their caregiver',
+        what:'Uncertainty about which symptoms are expected, normal healing discomfort and which signal a genuine complication needing medical attention',
+        where:'Throughout the recovery period',
+        why:'Confidently distinguishing expected discomfort from a genuine red flag protects against both unnecessary alarm over normal healing and dangerous delay in a real complication.',
+        how:'Ask the medical team specifically what is expected as normal during this recovery timeline, and what specific signs would mean something is wrong, keeping this list on the personalised cheat sheet.',
+        measurement:'Recognised guidance: new or worsening fever, sudden severe pain, sudden new swelling, chest pain, breathlessness, or calf pain/swelling generally warrant urgent medical attention — confirm the specific list for this recovery with the medical team.',
+        example:'Having a clear written list on the cheat sheet gives confidence to call promptly about a genuinely concerning symptom, rather than waiting anxiously to see if it passes.',
+        tip:'When genuinely unsure whether a symptom is normal, call and ask — this is never an overreaction during recovery from injury or surgery.' },
+
+      { id:'ir73', num:'IR73', risk:'critical', title:'Recognising Signs That Need Emergency, Not Routine, Attention',
+        who:'Everyone involved in recovery care',
+        what:'A genuine medical emergency mistaken for routine recovery discomfort, delaying urgent care',
+        where:'Throughout the recovery period',
+        why:'A small number of recovery complications are genuine emergencies requiring immediate attention rather than a routine call, and knowing this distinction in advance removes hesitation in a critical moment.',
+        how:'Confirm with the medical team in advance which specific signs (such as sudden chest pain, breathlessness, sudden severe swelling of a limb, or heavy uncontrolled bleeding) require emergency attention rather than a routine call, and keep this clearly marked on the personalised cheat sheet.',
+        measurement:'Recognised guidance: sudden chest pain, breathlessness, signs of a possible blood clot, or uncontrolled bleeding generally warrant emergency attention — confirm the specific emergency criteria for this recovery with the medical team.',
+        example:'Recognising sudden calf swelling and breathlessness as emergency signs, discussed in advance with the surgical team, leads to prompt emergency care rather than a wait-and-see approach.',
+        tip:'Mark true emergency signs clearly and separately from routine "call the clinic" signs on the cheat sheet, so there is no hesitation about which applies.' },
+
+      { id:'ir74', num:'IR74', risk:'medium', title:'The Emotional Toll of Temporary Dependence Acknowledged',
+        who:'Anyone experiencing a sudden loss of independence during recovery',
+        what:'Frustration, low mood, or a sense of loss around needing help with previously independent tasks, going unacknowledged',
+        where:'Throughout the household',
+        why:'A sudden shift from independence to needing help with everyday tasks is a genuine emotional adjustment, not just a logistical one, and acknowledging this openly supports better coping.',
+        how:'Talk openly about the emotional side of needing help, allow space for frustration without judgement, and remind each other that this is a temporary phase of recovery, not a permanent state.',
+        measurement:'No numeric standard — this is a practice of open acknowledgement, not a metric.',
+        example:'An open conversation about how hard it feels to need help with dressing normalises the frustration rather than leaving it unspoken and building resentment.',
+        tip:'Frustration about needing help is a completely normal response, not a sign anything is wrong — naming it out loud often helps more than pushing through silently.' },
+
+      { id:'ir75', num:'IR75', risk:'low', title:'Staying Connected During a Period of Reduced Mobility',
+        who:'Anyone whose social contact has reduced significantly during recovery',
+        what:'Isolation from reduced mobility and an inability to leave the home as usual, affecting mood and wellbeing',
+        where:'Throughout the recovery period',
+        why:'Reduced mobility often brings reduced social contact at exactly the time emotional support matters most, and maintaining connection supports overall wellbeing during recovery.',
+        how:'Plan regular contact with friends and family through visits, calls, or video chats, and consider whether anyone might visit specifically to keep the person recovering socially connected, not just for practical help.',
+        measurement:'No numeric standard — aim for regular, meaningful social contact throughout the recovery period, not only practical caregiving visits.',
+        example:'A weekly video call with a close friend, scheduled as a standing appointment, becomes something genuinely looked forward to during a physically restricted period.',
+        tip:'Social visits that are just for company, not caregiving tasks, are worth planning deliberately during recovery.' },
+
+      { id:'ir76', num:'IR76', risk:'low', title:'Realistic Expectations Set for the Recovery Timeline',
+        who:'Everyone involved in supporting recovery',
+        what:'Unrealistic expectations about recovery speed, leading to frustration, disappointment, or pressure to do more than is medically appropriate',
+        where:'Throughout the recovery period',
+        why:'Clear, realistic expectations set early — understanding that recovery is rarely linear and often takes longer than initially hoped — reduce frustration and support patience with the process.',
+        how:'Ask the medical team for a realistic expected recovery timeline early on, and revisit this understanding as an ordinary part of follow-up conversations rather than expecting a fixed, guaranteed schedule.',
+        measurement:'No numeric standard — confirm the expected recovery timeline and its likely variability directly with the medical team.',
+        example:'Understanding from the surgical team that full recovery commonly takes several months, not weeks, reframes a slower-than-hoped week as expected rather than concerning.',
+        tip:'Recovery timelines given by medical teams are usually a range, not a guarantee — build in some flexibility to expectations from the start.' },
+
+      { id:'ir77', num:'IR77', risk:'medium', title:'All Follow-Up Appointments Tracked and Kept',
+        who:'Anyone with scheduled medical, physiotherapy, or wound-care follow-up appointments',
+        what:'A missed or forgotten follow-up appointment, delaying identification of a developing problem or a needed adjustment to the recovery plan',
+        where:'Wherever follow-up appointments take place',
+        why:'Follow-up appointments are scheduled checkpoints that catch problems early and confirm recovery is on track — missing them removes an important safety net.',
+        how:'Keep every follow-up appointment on the personalised cheat sheet with dates and details, and arrange transport or support in advance so mobility limitations do not become a reason to miss one.',
+        measurement:'No numeric standard — keep every scheduled follow-up appointment; contact the clinic promptly to reschedule if genuinely unavoidable.',
+        example:'Arranging a lift to a physiotherapy follow-up well in advance removes transport as a last-minute reason the appointment might be missed.',
+        tip:'Add every follow-up appointment to the cheat sheet the moment it is scheduled, including who is providing transport if needed.' },
+
+      { id:'ir78', num:'IR78', risk:'medium', title:'Questions for Follow-Up Appointments Written Down in Advance',
+        who:'Anyone attending a medical or physiotherapy follow-up appointment',
+        what:'Questions or concerns forgotten in the moment during a follow-up appointment, once time is limited and focus shifts to the immediate exam',
+        where:'Wherever follow-up appointments take place',
+        why:'It is easy to forget questions that felt important a few days earlier once actually in the appointment, and a written list ensures nothing important goes unasked.',
+        how:'Keep a running note of questions or concerns as they come up between appointments, using the personalised cheat sheet notes section, and bring this list to each follow-up.',
+        measurement:'No numeric standard — a written list is generally more reliable than memory alone during a time-limited appointment.',
+        example:'Bringing a written list of three questions to a follow-up ensures a concern about returning to driving is not forgotten once the appointment begins.',
+        tip:'Add questions to the list the moment they occur, rather than trying to remember them all just before the appointment.' },
+
+      { id:'ir79', num:'IR79', risk:'medium', title:'Return to Work, Driving or Usual Activities Confirmed Medically',
+        who:'Anyone planning a return to work, driving, or other significant usual activities during recovery',
+        what:'Returning to driving, work, or physically demanding usual activities before it has been medically confirmed as safe to do so',
+        where:'Wherever these activities normally take place',
+        why:'Returning to certain activities before healing or medication clearance genuinely allows can risk both re-injury and, in the case of driving, safety more broadly.',
+        how:'Confirm specifically with the medical team when it is safe to return to driving, work, or other significant activities, rather than estimating based on how ready it feels.',
+        measurement:'No numeric standard — confirm specific clearance for driving, work, and other significant activities directly with the medical team.',
+        example:'Confirming driving clearance directly with the surgical team, rather than assuming based on feeling capable, avoids returning to the road before reaction time has genuinely recovered.',
+        tip:'Medication effects, particularly sedating pain relief, are a common reason driving clearance is delayed beyond how capable a person might feel.' },
+
+      { id:'ir80', num:'IR80', risk:'low', title:'A Simple Recovery Progress Log Kept',
+        who:'Anyone tracking recovery milestones over time',
+        what:'No record of recovery progress over time, making it hard to notice genuine improvement or flag a plateau worth discussing',
+        where:'Kept with the personalised cheat sheet',
+        why:'A simple log helps both the person recovering and the medical team see the bigger picture of progress, which day-to-day fluctuations can otherwise obscure.',
+        how:'Keep a brief weekly note of mobility, pain level, and any milestones reached, and bring it to follow-up appointments to support an accurate conversation about progress.',
+        measurement:'No numeric standard — a few lines per week noting mobility and pain trends is generally sufficient.',
+        example:'A weekly log reveals steady week-on-week improvement in walking distance that day-to-day fluctuation had made hard to notice.',
+        tip:'Note both good and difficult days honestly — an accurate log is more useful to the medical team than an overly positive one.' },
+
+      { id:'ir81', num:'IR81', risk:'low', title:'Caregiver Wellbeing Recognised as Part of Recovery',
+        who:'Anyone providing significant support during someone else\'s recovery',
+        what:'A supporting caregiver\'s own exhaustion or strain going unacknowledged while focus stays entirely on the person recovering',
+        where:'Throughout the household',
+        why:'Caring for someone through recovery, particularly in the early weeks, can be genuinely demanding, and an exhausted caregiver is less able to provide safe, attentive support.',
+        how:'Check in on the caregiver\'s own wellbeing regularly, and arrange breaks or additional support if the caregiving demands are becoming difficult to sustain.',
+        measurement:'No numeric standard — recognised guidance treats caregiver exhaustion as an early-warning sign worth addressing proactively, not a personal failing.',
+        example:'A partner arranging a few hours of respite from caregiving duties each week sustains their own capacity to provide steady, attentive support.',
+        tip:'A caregiver\'s own wellbeing is part of the overall safety plan, not a lesser priority than the recovery itself.' },
+
+      { id:'ir82', num:'IR82', risk:'medium', title:'A Plan for the Transition Back to Full Independence',
+        who:'Anyone approaching the later stages of recovery',
+        what:'No clear plan for gradually stepping down support as independence genuinely returns, leading to either an abrupt, unsupported transition or an unnecessarily prolonged period of assistance',
+        where:'Discussed as recovery progresses',
+        why:'A planned, gradual transition back to independence — confirmed with the medical team rather than assumed — supports a smooth, confident return to normal activity.',
+        how:'Discuss the expected transition timeline with the physiotherapy or medical team as recovery progresses, and step down support and mobility aids gradually, one confirmed stage at a time.',
+        measurement:'No numeric standard — follow the specific transition timeline and stages confirmed by the physiotherapy team for this injury.',
+        example:'A physiotherapist confirming it is safe to stop using a cane for short indoor distances gives clear, specific permission for the next stage of independence.',
+        tip:'Celebrate each confirmed stage of returning independence as genuine progress, rather than rushing toward "fully better" as the only milestone that counts.' },
+
+      { id:'ir83', num:'IR83', risk:'low', title:'Marking Progress and Moments of Improvement',
+        who:'The whole household supporting recovery',
+        what:'A focus so entirely on remaining limitations that genuine progress and improvement go unnoticed or uncelebrated',
+        where:'Throughout the recovery period',
+        why:'Recovery that focuses only on what is still difficult can obscure real, steady progress — noticing and marking improvements supports motivation and morale through what is often a slower process than initially hoped.',
+        how:'Notice and acknowledge genuine milestones as they happen — the first unaided steps, the first full night without pain medication, the first outing — and consider keeping a simple note of them alongside the practical recovery log.',
+        measurement:'No numeric standard — this is a practice, not a metric, worth returning to regularly.',
+        example:'Marking "first walk to the end of the driveway unaided" in the recovery log gives the family something encouraging to look back on during a harder week.',
+        tip:'Recovery often feels slow from the inside — a log of small wins makes real progress visible even on days it does not feel that way.' },
+
+      { id:'ir84', num:'IR84', risk:'high', title:'A Complete, Written Recovery and Emergency Plan',
+        who:'The whole household supporting recovery',
+        what:'No single, complete written plan bringing together medication schedule, wound care, weight-bearing status, follow-up appointments, and emergency contacts',
+        where:'Kept with the personalised cheat sheet, accessible to everyone in the care network',
+        why:'Bringing everything in this checklist together into one clear, shared plan protects both safety and peace of mind — the aim throughout has been steady, supported healing, and a good written plan carries that same intention through to full recovery.',
+        how:'Bring together the medication schedule, wound-care instructions, weight-bearing status, follow-up appointments, and emergency contacts into one written plan on the personalised cheat sheet, reviewed and updated as recovery progresses.',
+        measurement:'No numeric standard — review and update the full plan at each follow-up appointment and after any significant change in recovery status.',
+        example:'When an unexpected question comes up during a follow-up call, having the complete plan on hand means the family answers confidently and accurately rather than guessing from memory.',
+        tip:'Every check in this list has served one purpose: a steady, well-supported recovery. Let that be the plan\'s last word too — patience, safety and full healing, always together.' }
+    ]
+  }
+];
+const STORE_KEY = 'safelife-injury-pro';
+const completed = new Set();
+let lang = 'en', theme = 'injury', mode = 'light', riskFilter = null, activeZone = 1;
+const TOTAL = 84;
+
+function t(key){ return (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key; }
+function persist(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify({completed:[...completed], lang, theme, mode})); }catch(e){}
+}
+function restore(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(!raw) return;
+    const d = JSON.parse(raw);
+    (d.completed||[]).forEach(id=>completed.add(id));
+    if(false && d.lang && I18N[d.lang]) lang = d.lang; /* language switching disabled for English-only release — remove "false &&" to re-enable */
+    if(d.theme) theme = d.theme;
+    if(d.mode) mode = d.mode;
+  }catch(e){}
+}
+
+// ═══════════════════════════════════════════
+// PROGRESS & STATS
+// ═══════════════════════════════════════════
+function updateProgress(){
+  const done = completed.size;
+  document.getElementById('topbar-done').textContent = done;
+  document.getElementById('progress-count').textContent = done + ' ' + t('ofWord') + ' ' + TOTAL;
+  document.getElementById('progress-fill').style.width = (done/TOTAL*100) + '%';
+  ZONES.forEach(z=>{
+    const zDone = z.checks.filter(c=>completed.has(c.id)).length;
+    document.getElementById('ztc-'+z.id).textContent = zDone + '/14';
+  });
+  document.getElementById('celebrate').classList.toggle('show', done === TOTAL);
+  persist();
+}
+function fillStats(){
+  const counts = {critical:0,high:0,medium:0,low:0};
+  ZONES.forEach(z=>z.checks.forEach(c=>counts[c.risk]++));
+  ['critical','high','medium','low'].forEach(r=>{ document.getElementById('s-'+r).textContent = counts[r]; });
+}
+
+// ═══════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════
+function buildCard(check){
+  const card = document.createElement('div');
+  card.className = 'check-card' + (completed.has(check.id) ? ' completed' : '');
+  card.dataset.id = check.id;
+  card.dataset.risk = check.risk;
+  card.innerHTML =
+    '<div class="check-header">' +
+      '<div class="check-checkbox">' + (completed.has(check.id) ? '✓' : '') + '</div>' +
+      '<div class="check-num">' + check.num + '</div>' +
+      '<div class="check-risk risk-' + check.risk + '">' + t(check.risk) + '</div>' +
+      '<div class="check-title">' + check.title + '</div>' +
+      '<div class="check-chevron">▼</div>' +
+    '</div>' +
+    '<div class="check-detail">' +
+      '<div class="detail-grid">' +
+        '<div class="detail-item"><div class="detail-label"><span>👤</span>' + t('who') + '</div><div class="detail-value">' + check.who + '</div></div>' +
+        '<div class="detail-item"><div class="detail-label"><span>⚠️</span>' + t('what') + '</div><div class="detail-value">' + check.what + '</div></div>' +
+        '<div class="detail-item"><div class="detail-label"><span>📍</span>' + t('where') + '</div><div class="detail-value">' + check.where + '</div></div>' +
+        '<div class="detail-item"><div class="detail-label"><span>❓</span>' + t('why') + '</div><div class="detail-value">' + check.why + '</div></div>' +
+        '<div class="detail-item full"><div class="detail-label"><span>🔧</span>' + t('how') + '</div><div class="detail-value">' + check.how + '</div></div>' +
+      '</div>' +
+      '<div class="measurement-box"><strong>📏 ' + t('standards') + '</strong>' + check.measurement + '</div>' +
+      '<div class="detail-item full" style="margin-top:10px;"><div class="detail-label"><span>💬</span>' + t('example') + '</div><div class="detail-value">' + check.example + '</div></div>' +
+      '<div class="tip-box"><span class="tip-icon">💡</span><span class="tip-text"><strong>' + t('quickTip') + ':</strong> ' + check.tip + '</span></div>' +
+    '</div>';
+  card.querySelector('.check-header').addEventListener('click', function(){ card.classList.toggle('open'); });
+  card.querySelector('.check-checkbox').addEventListener('click', function(e){
+    e.stopPropagation();
+    if(completed.has(check.id)){ completed.delete(check.id); card.classList.remove('completed'); this.textContent=''; }
+    else { completed.add(check.id); card.classList.add('completed'); this.textContent='✓'; }
+    updateProgress();
+  });
+  return card;
+}
+
+function renderAll(){
+  document.querySelectorAll('.zone-panel').forEach(p=>p.remove());
+  const main = document.getElementById('main-content');
+  ZONES.forEach(z=>{
+    const panel = document.createElement('div');
+    panel.className = 'zone-panel' + (z.id === activeZone ? ' active' : '');
+    panel.id = 'zone-panel-' + z.id;
+    const header = document.createElement('div');
+    header.className = 'zone-header';
+    header.innerHTML = '<div class="zone-icon">' + (ICONS['z'+z.id] || z.icon) + '</div><div class="zone-header-text"><h2>' + t('z'+z.id) + '</h2><p>' + t('zd'+z.id) + '</p></div>';
+    panel.appendChild(header);
+    const actions = document.createElement('div');
+    actions.className = 'zone-actions';
+    const bExpand = document.createElement('button'); bExpand.className='btn btn-outline'; bExpand.textContent=t('expandAll');
+    const bCollapse = document.createElement('button'); bCollapse.className='btn btn-outline'; bCollapse.textContent=t('collapseAll');
+    const bUnmark = document.createElement('button'); bUnmark.className='btn btn-outline'; bUnmark.textContent=t('unmarkAll');
+    const bMark = document.createElement('button'); bMark.className='btn btn-primary'; bMark.textContent=t('markAll');
+    actions.append(bExpand,bCollapse,bUnmark,bMark);
+    panel.appendChild(actions);
+    const list = document.createElement('div');
+    list.className = 'checks-list';
+    z.checks.forEach(c=>list.appendChild(buildCard(c)));
+    panel.appendChild(list);
+    const disc = document.createElement('div');
+    disc.className = 'zone-disclaimer';
+    disc.textContent = '⚕ ' + t('disclaimer');
+    panel.appendChild(disc);
+    bExpand.addEventListener('click', ()=>list.querySelectorAll('.check-card').forEach(c=>c.classList.add('open')));
+    bCollapse.addEventListener('click', ()=>list.querySelectorAll('.check-card').forEach(c=>c.classList.remove('open')));
+    bMark.addEventListener('click', ()=>{ z.checks.forEach(c=>completed.add(c.id)); refreshCards(list); });
+    bUnmark.addEventListener('click', ()=>{ z.checks.forEach(c=>completed.delete(c.id)); refreshCards(list); });
+    main.appendChild(panel);
+  });
+  applyFilters();
+  updateProgress();
+}
+function refreshCards(list){
+  list.querySelectorAll('.check-card').forEach(card=>{
+    const done = completed.has(card.dataset.id);
+    card.classList.toggle('completed', done);
+    card.querySelector('.check-checkbox').textContent = done ? '✓' : '';
+  });
+  updateProgress();
+}
+
+// ═══════════════════════════════════════════
+// ZONES / SEARCH / FILTERS
+// ═══════════════════════════════════════════
+function switchZone(id){
+  activeZone = id;
+  document.querySelectorAll('.zone-tab').forEach(tab=>tab.classList.toggle('active', +tab.dataset.zone === id));
+  document.querySelectorAll('.zone-panel').forEach(p=>p.classList.toggle('active', p.id === 'zone-panel-' + id));
+}
+document.querySelectorAll('.zone-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{ document.getElementById('search-input').value=''; applyFilters(); switchZone(+tab.dataset.zone); });
+});
+document.querySelectorAll('.hero-badge[data-zone]').forEach(badge=>{
+  badge.addEventListener('click', ()=>{
+    switchZone(+badge.dataset.zone);
+    document.getElementById('zone-tabs').scrollIntoView({behavior:'smooth'});
+  });
+});
+document.querySelectorAll('.stat-pill[data-risk]').forEach(pill=>{
+  pill.addEventListener('click', ()=>{
+    riskFilter = (riskFilter === pill.dataset.risk) ? null : pill.dataset.risk;
+    document.querySelectorAll('.stat-pill[data-risk]').forEach(p=>p.classList.toggle('filter-on', p.dataset.risk === riskFilter));
+    applyFilters();
+  });
+});
+document.getElementById('search-input').addEventListener('input', applyFilters);
+
+function applyFilters(){
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  const searching = q.length > 0;
+  let anyVisible = false;
+  ZONES.forEach(z=>{
+    const panel = document.getElementById('zone-panel-' + z.id);
+    if(!panel) return;
+    let zoneVisible = 0;
+    panel.querySelectorAll('.check-card').forEach(card=>{
+      const check = z.checks.find(c=>c.id === card.dataset.id);
+      const text = (check.title+' '+check.who+' '+check.what+' '+check.where+' '+check.why+' '+check.how+' '+check.measurement+' '+check.example+' '+check.tip).toLowerCase();
+      const matchQ = !searching || text.includes(q);
+      const matchR = !riskFilter || check.risk === riskFilter;
+      const show = matchQ && matchR;
+      card.style.display = show ? '' : 'none';
+      if(show) zoneVisible++;
+    });
+    if(searching || riskFilter){
+      panel.classList.toggle('active', zoneVisible > 0);
+      panel.querySelector('.zone-actions').style.display = 'none';
+    } else {
+      panel.classList.toggle('active', z.id === activeZone);
+      panel.querySelector('.zone-actions').style.display = '';
+    }
+    if(zoneVisible > 0) anyVisible = true;
+  });
+  document.getElementById('search-no-results').style.display = (searching || riskFilter) && !anyVisible ? 'block' : 'none';
+}
+
+// ═══════════════════════════════════════════
+// THEMES / MODE / LANGUAGE
+// ═══════════════════════════════════════════
+const THEMES = [
+  {id:'injury', name:'Steady Blue', c:'#6E8CA0'},
+  {id:'teal',   name:'Teal Calm',     c:'#14B8A6'},
+  {id:'amber',  name:'Warm Amber',    c:'#F59E0B'},
+  {id:'rose',   name:'Rose Care',     c:'#E11D48'},
+  {id:'violet', name:'Gentle Violet', c:'#7C3AED'},
+  {id:'ocean',  name:'Ocean Blue',    c:'#2563EB'},
+  {id:'forest', name:'Forest Green',  c:'#16A34A'}
+];
+function buildThemeMenu(){
+  const dd = document.getElementById('dd-theme');
+  dd.innerHTML = '<div class="dropdown-title">' + t('theme') + '</div>';
+  THEMES.forEach(th=>{
+    const row = document.createElement('button');
+    row.className = 'theme-row' + (th.id === theme ? ' selected' : '');
+    row.innerHTML = '<span class="theme-swatch" style="background:' + th.c + '"></span>' + th.name + (th.id === theme ? '<span class="check-mark">✓</span>' : '');
+    row.addEventListener('click', e=>{
+      e.stopPropagation();
+      theme = th.id;
+      document.body.dataset.theme = theme;
+      buildThemeMenu(); persist();
+    });
+    dd.appendChild(row);
+  });
+}
+function buildLangMenu(){
+  const dd = document.getElementById('dd-lang');
+  dd.innerHTML = '<div class="dropdown-title">🌐 Language</div>';
+  Object.keys(I18N).forEach(code=>{
+    const row = document.createElement('button');
+    row.className = 'theme-row' + (code === lang ? ' selected' : '');
+    row.innerHTML = '<span style="font-weight:800;font-size:11px;color:var(--accent);min-width:22px;">' + code.toUpperCase() + '</span>' + I18N[code].name + (code === lang ? '<span class="check-mark">✓</span>' : '');
+    row.addEventListener('click', e=>{
+      e.stopPropagation();
+      lang = code;
+      applyLang(); renderAll(); buildLangMenu(); buildManual(); buildCheat(); buildCollection(); persist();
+    });
+    dd.appendChild(row);
+  });
+  const note = document.createElement('div');
+  note.style.cssText = 'font-size:10.5px;color:var(--ink-soft);padding:8px;max-width:230px;line-height:1.4;';
+  note.textContent = t('langNote');
+  dd.appendChild(note);
+}
+function applyLang(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ el.innerHTML = t(el.dataset.i18n); });
+  document.getElementById('search-input').placeholder = t('searchPh');
+  document.getElementById('lang-label').textContent = lang.toUpperCase();
+  document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+  document.documentElement.lang = lang;
+}
+function toggleDropdown(id, e){
+  e.stopPropagation();
+  const dd = document.getElementById(id);
+  const wasOpen = dd.classList.contains('open');
+  document.querySelectorAll('.dropdown').forEach(d=>d.classList.remove('open'));
+  if(!wasOpen) dd.classList.add('open');
+}
+document.getElementById('btn-theme').addEventListener('click', e=>toggleDropdown('dd-theme', e));
+document.getElementById('btn-lang').addEventListener('click', e=>toggleDropdown('dd-lang', e));
+document.addEventListener('click', ()=>document.querySelectorAll('.dropdown').forEach(d=>d.classList.remove('open')));
+document.getElementById('btn-mode').addEventListener('click', function(){
+  mode = mode === 'light' ? 'dark' : 'light';
+  document.body.dataset.mode = mode;
+  this.textContent = mode === 'light' ? '🌙' : '☀️';
+  persist();
+});
+
+// ═══════════════════════════════════════════
+// SAVE / LOAD PROGRESS
+// ═══════════════════════════════════════════
+document.getElementById('btn-save').addEventListener('click', ()=>{
+  const data = { product:'SafeLife', module:'injury-recovery', version:1, savedAt:new Date().toISOString(), completed:[...completed], lang, theme, mode };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'SafeLife_Injury_Progress_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+document.getElementById('btn-load').addEventListener('click', ()=>document.getElementById('load-file').click());
+document.getElementById('load-file').addEventListener('change', function(){
+  const file = this.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{
+      const d = JSON.parse(reader.result);
+      if(d.module !== 'injury-recovery' && !confirm('This file was saved from a different module. Load anyway?')) return;
+      completed.clear();
+      (d.completed||[]).forEach(id=>completed.add(id));
+      if(false && d.lang && I18N[d.lang]) lang = d.lang; /* language switching disabled for English-only release — remove "false &&" to re-enable */
+      if(d.theme) theme = d.theme;
+      if(d.mode) mode = d.mode;
+      document.body.dataset.theme = theme;
+      document.body.dataset.mode = mode;
+      document.getElementById('btn-mode').textContent = mode === 'light' ? '🌙' : '☀️';
+      applyLang(); renderAll(); buildThemeMenu(); buildLangMenu(); persist();
+    }catch(e){ alert('Could not read that file — is it a SafeLife progress file?'); }
+  };
+  reader.readAsText(file);
+  this.value = '';
+});
+
+// ═══════════════════════════════════════════
+// MODALS / PRINT / NAV
+// ═══════════════════════════════════════════
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-close').forEach(b=>b.addEventListener('click', ()=>closeModal(b.dataset.close)));
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click', e=>{ if(e.target === o) o.classList.remove('open'); }));
+document.getElementById('btn-manual').addEventListener('click', ()=>openModal('modal-manual'));
+document.getElementById('btn-cheat').addEventListener('click', ()=>openModal('modal-cheat'));
+document.getElementById('btn-print').addEventListener('click', ()=>openModal('modal-print'));
+document.getElementById('btn-search').addEventListener('click', ()=>{
+  const s = document.getElementById('search-input');
+  s.scrollIntoView({behavior:'smooth', block:'center'});
+  setTimeout(()=>s.focus(), 350);
+});
+
+function doPrint(cls){
+  document.querySelectorAll('.modal-overlay').forEach(o=>o.classList.remove('open'));
+  const wasOpen = new Set([...document.querySelectorAll('.check-card.open')]);
+  document.querySelectorAll('.check-card').forEach(c=>c.classList.add('open'));
+  if(cls) document.body.classList.add(cls);
+  const cleanup = ()=>{
+    document.body.classList.remove('print-zone','print-cheat');
+    document.querySelectorAll('.check-card').forEach(c=>{ if(!wasOpen.has(c)) c.classList.remove('open'); });
+    window.removeEventListener('afterprint', cleanup);
+  };
+  window.addEventListener('afterprint', cleanup);
+  setTimeout(()=>window.print(), 60);
+}
+document.getElementById('print-all').addEventListener('click', ()=>doPrint(null));
+document.getElementById('print-zone').addEventListener('click', ()=>doPrint('print-zone'));
+document.getElementById('print-cheat2').addEventListener('click', ()=>doPrint('print-cheat'));
+document.getElementById('btn-print-cheat').addEventListener('click', ()=>doPrint('print-cheat'));
+
+function visibleCards(){
+  return [...document.querySelectorAll('.zone-panel.active .check-card')].filter(c=>c.style.display !== 'none');
+}
+function nearestCardIx(cards){
+  const mark = window.innerHeight * 0.35;
+  let best = 0, bestDist = Infinity;
+  cards.forEach((c, i)=>{
+    const d = Math.abs(c.getBoundingClientRect().top - mark);
+    if(d < bestDist){ bestDist = d; best = i; }
+  });
+  return best;
+}
+function goToCard(cards, ix){
+  if(ix < 0){ window.scrollTo({top:0, behavior:'smooth'}); return; }
+  if(ix > cards.length - 1) ix = cards.length - 1;
+  const y = cards[ix].getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.35;
+  window.scrollTo({top: Math.max(0, y), behavior:'smooth'});
+}
+document.getElementById('fn-top').addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+document.getElementById('fn-next').addEventListener('click', ()=>{
+  const cards = visibleCards(); if(!cards.length) return;
+  goToCard(cards, nearestCardIx(cards) + 1);
+});
+document.getElementById('fn-prev').addEventListener('click', ()=>{
+  const cards = visibleCards(); if(!cards.length) return;
+  goToCard(cards, nearestCardIx(cards) - 1);
+});
+
+// ═══════════════════════════════════════════
+// MANUAL / CHEAT SHEET / COLLECTION
+// ═══════════════════════════════════════════
+function buildManual(){
+  document.getElementById('manual-body').innerHTML =
+    t('manualBody') +
+    '<h4>⚕</h4><p>' + t('disclaimer') + ' ' + t('langNote') + '</p>';
+}
+
+const GOLDEN_RULES = [
+  'Confirm and follow the exact weight-bearing status given by the surgical team — do not guess or push past it',
+  'Fit crutches, walkers or wheelchairs correctly and recheck the fit once swelling settles',
+  'Store all pain medication locked and out of reach, especially if opioids are prescribed',
+  'Install wall-fixed grab bars beside the toilet and in the bath or shower — never rely on a towel rail',
+  'Watch for spreading redness, fever, foul odour or worsening pain — call the medical team promptly',
+  'Pace activity to the plan given, even on a good day — a good day is not a signal to skip ahead',
+  'Keep a phone within reach at all times, especially during bathing',
+  'Never combine prescribed pain medication with alcohol unless a prescriber has confirmed it is safe',
+  'Keep every follow-up appointment and bring written questions with you',
+  'Recovery is rarely a straight line — patience and pacing protect steady, lasting healing'
+];
+const KEY_NUMBERS = [
+  ['Crutch handgrip height','level with the wrist crease, arms relaxed'],
+  ['Clear walking path','minimum 90cm (35 in) wide'],
+  ['Night-light brightness','5–20 lux along walkways'],
+  ['Hot water / scald risk','keep supply at or below ~49°C (120°F)'],
+  ['Comfortable indoor temperature','18–24°C (64–75°F)'],
+  ['Hand hygiene before wound contact','wash hands at least 20 seconds'],
+  ['Seat height for standing','knees level with or slightly below hips'],
+  ['Fluid intake (general guidance)','roughly 1.5–2 litres (50–68 fl oz) daily unless advised otherwise'],
+  ['Grab bars','wall-fixed into studs/anchors, not suction-mounted'],
+  ['Medication log check','update within a day of any dose change'],
+  ['Wound-care appointment tracking','keep every scheduled follow-up'],
+  ['Rug/mat trip edge','secure or remove any edge lifting more than a few millimetres'],
+  ['Progress log review','weekly note of mobility and pain trend'],
+  ['Recovery plan review','revisit at every follow-up appointment']
+];
+
+const CONTACTS_KEY = 'safelife-injury-contacts';
+const DEFAULT_CONTACTS = [
+  ['Emergency services',''],
+  ['GP / family doctor',''],
+  ['Surgeon / specialist',''],
+  ['Physiotherapist',''],
+  ['Pharmacist',''],
+  ['Wound-care nurse / clinic',''],
+  ['Nearest hospital',''],
+  ['Backup caregiver','']
+];
+let contacts;
+try{
+  const raw = localStorage.getItem(CONTACTS_KEY);
+  contacts = raw ? JSON.parse(raw) : null;
+}catch(e){ contacts = null; }
+if(!contacts || !Array.isArray(contacts.list)) contacts = { list: DEFAULT_CONTACTS.map(c=>c.slice()), notes:'' };
+function saveContacts(){
+  try{ localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts)); }catch(e){}
+  buildCheatPrint();
+}
+function buildCheat(){
+  const body = document.getElementById('cheat-body');
+  const rules = GOLDEN_RULES.map(r=>'<li>' + r + '</li>').join('');
+  const nums = KEY_NUMBERS.map(n=>'<tr><td><strong>' + n[0] + '</strong></td><td>' + n[1] + '</td></tr>').join('');
+  body.innerHTML =
+    '<h4>📞 ' + t('cheatContacts') + '</h4>' +
+    '<p style="font-size:12px;color:var(--ink-soft);margin-bottom:8px;">' + t('cheatHint') + '</p>' +
+    '<div id="contact-rows"></div>' +
+    '<button class="btn btn-outline" id="add-contact" style="margin:8px 0 4px;">' + t('addContact') + '</button>' +
+    '<h4>⭐ ' + t('rules') + '</h4><ul class="rule-list">' + rules + '</ul>' +
+    '<h4>📏 ' + t('keyNums') + '</h4><table><tr><th>Check</th><th>Safe value / standard</th></tr>' + nums + '</table>' +
+    '<h4>📝 ' + t('myNotes') + '</h4>' +
+    '<textarea id="cheat-notes" placeholder="' + t('notesPh') + '" style="width:100%;min-height:80px;border:1px solid var(--line);border-radius:8px;background:var(--tile);color:var(--ink);padding:10px 12px;font-family:\'Inter\',sans-serif;font-size:13px;resize:vertical;"></textarea>';
+  renderContactRows();
+  const notesEl = document.getElementById('cheat-notes');
+  notesEl.value = contacts.notes || '';
+  notesEl.addEventListener('input', function(){ contacts.notes = this.value; saveContacts(); });
+  document.getElementById('add-contact').addEventListener('click', function(){
+    contacts.list.push(['','']);
+    renderContactRows(); saveContacts();
+    const rows = document.querySelectorAll('#contact-rows .c-name');
+    rows[rows.length-1].focus();
+  });
+  buildCheatPrint();
+}
+function renderContactRows(){
+  const wrap = document.getElementById('contact-rows');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  const inputCss = 'border:1px solid var(--line);border-radius:8px;background:var(--tile);color:var(--ink);padding:8px 10px;font-family:\'Inter\',sans-serif;font-size:13px;';
+  contacts.list.forEach((c, ix)=>{
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;align-items:center;';
+    const name = document.createElement('input');
+    name.className = 'c-name'; name.type = 'text'; name.value = c[0];
+    name.placeholder = 'Name / service'; name.style.cssText = inputCss + 'flex:1.4;min-width:0;';
+    const num = document.createElement('input');
+    num.type = 'text'; num.value = c[1];
+    num.placeholder = '+ number'; num.style.cssText = inputCss + 'flex:1;min-width:0;font-weight:700;';
+    const del = document.createElement('button');
+    del.textContent = '✕'; del.title = t('delRow');
+    del.style.cssText = 'border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);border-radius:8px;width:30px;height:34px;cursor:pointer;flex-shrink:0;';
+    name.addEventListener('input', function(){ contacts.list[ix][0] = this.value; saveContacts(); });
+    num.addEventListener('input', function(){ contacts.list[ix][1] = this.value; saveContacts(); });
+    del.addEventListener('click', function(){ contacts.list.splice(ix,1); renderContactRows(); saveContacts(); });
+    row.append(name, num, del);
+    wrap.appendChild(row);
+  });
+}
+function buildCheatPrint(){
+  const esc = s => String(s).replace(/</g,'&lt;');
+  const filled = contacts.list.filter(c=>c[0] || c[1]);
+  const chips = filled.map(h=>'<div class="cp-chip"><b>' + esc(h[0]||'—') + '</b><span>' + (esc(h[1]) || '____________') + '</span></div>').join('');
+  const rules = GOLDEN_RULES.map(r=>'<li>' + r + '</li>').join('');
+  const nums = KEY_NUMBERS.map(n=>'<tr><td><strong>' + n[0] + '</strong></td><td>' + n[1] + '</td></tr>').join('');
+  const activeQR = getSavedQR() || QR_IMAGE;
+  const qr = activeQR
+    ? '<img src="' + activeQR + '" alt="QR">'
+    : '<div class="qr-ph">' + (STORE_URL ? esc(STORE_URL) : 'Your QR<br>code here') + '</div>';
+  document.getElementById('cheat-print').innerHTML =
+    '<div class="cp-card">' +
+      '<div class="cp-head">' + ICONS.stage +
+        '<div><div class="cp-title">Safe<em>Life</em></div>' +
+        '<div class="cp-sub">' + t('cheatTitle') + ' · ' + t('heroTitle') + '</div></div>' +
+        '<div class="cp-tag">"To all moms by a mom"<br>NEBOSH &amp; OSHA trained HSE professional</div>' +
+      '</div>' +
+      '<div class="cp-contacts">' + chips + '</div>' +
+      '<div class="cp-cols">' +
+        '<div class="cp-rules"><h3>⭐ ' + t('rules') + '</h3><ul>' + rules + '</ul></div>' +
+        '<div class="cp-numsec"><h3>📏 ' + t('keyNums') + '</h3><table>' + nums + '</table></div>' +
+      '</div>' +
+      (contacts.notes ? '<div class="cp-notes"><b>' + t('myNotes') + '</b>' + esc(contacts.notes) + '</div>' : '') +
+      '<div class="cp-foot">' +
+        '<div>Made with care by <b>' + BRAND_NAME + '</b> · SafeLife Collection<br>' + t('disclaimer') + '</div>' +
+        '<div class="cp-qr">' + (STORE_URL ? '<div style="font-size:8px;">' + esc(STORE_URL) + '<br>Scan for the full collection</div>' : '') + qr + '</div>' +
+      '</div>' +
+    '</div>';
+}
+
+// ═══════════════════════════════════════════
+// SELLER: per-product QR code, PIN-protected (each file's own STORE_KEY keeps these separate)
+// ═══════════════════════════════════════════
+const QR_KEY = STORE_KEY + '-qr';
+const QR_PIN_KEY = STORE_KEY + '-qrpin';
+function getSavedQR(){ try{ return localStorage.getItem(QR_KEY) || ''; }catch(e){ return ''; } }
+function sellerRenderLocked(){
+  const hasPin = !!localStorage.getItem(QR_PIN_KEY);
+  document.getElementById('seller-body').innerHTML = hasPin
+    ? '<p>Enter your PIN to manage this file\'s QR code.</p><input type="password" inputmode="numeric" maxlength="12" id="seller-pin-input" placeholder="PIN" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--tile);color:var(--ink);font-size:15px;letter-spacing:2px;margin-bottom:10px;">'
+      + '<div class="modal-actions"><button class="btn btn-primary" id="seller-unlock">Unlock</button></div>'
+    : '<p>No PIN set yet for this file. Create one now — you\'ll need it to change the QR code later. Every product file keeps its own separate PIN and QR code.</p>'
+      + '<input type="password" inputmode="numeric" maxlength="12" id="seller-pin-new" placeholder="Create a PIN" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--tile);color:var(--ink);font-size:15px;letter-spacing:2px;margin-bottom:8px;">'
+      + '<input type="password" inputmode="numeric" maxlength="12" id="seller-pin-confirm" placeholder="Confirm PIN" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--tile);color:var(--ink);font-size:15px;letter-spacing:2px;margin-bottom:10px;">'
+      + '<div class="modal-actions"><button class="btn btn-primary" id="seller-setpin">Set PIN</button></div>';
+  if(hasPin){
+    document.getElementById('seller-unlock').addEventListener('click', function(){
+      const val = document.getElementById('seller-pin-input').value;
+      if(val && val === localStorage.getItem(QR_PIN_KEY)) sellerRenderUnlocked();
+      else alert('Incorrect PIN.');
+    });
+  } else {
+    document.getElementById('seller-setpin').addEventListener('click', function(){
+      const a = document.getElementById('seller-pin-new').value, b = document.getElementById('seller-pin-confirm').value;
+      if(!a || a.length < 4){ alert('Use at least 4 digits.'); return; }
+      if(a !== b){ alert('PINs do not match.'); return; }
+      try{ localStorage.setItem(QR_PIN_KEY, a); }catch(e){}
+      sellerRenderUnlocked();
+    });
+  }
+}
+function sellerRenderUnlocked(){
+  const current = getSavedQR();
+  document.getElementById('seller-body').innerHTML =
+    '<p>Upload this product\'s QR code image. It replaces the placeholder on the printed cheat sheet — saved on this device only, separately for every product file.</p>' +
+    (current ? '<img src="' + current + '" style="width:110px;height:110px;border:1px solid var(--line);border-radius:9px;margin-bottom:10px;object-fit:contain;background:#fff;">' : '') +
+    '<input type="file" accept="image/*" id="seller-qr-file" style="margin-bottom:10px;">' +
+    '<div class="modal-actions">' +
+      '<button class="btn btn-outline" id="seller-remove-qr">Remove QR</button>' +
+      '<button class="btn btn-outline" id="seller-change-pin">Change PIN</button>' +
+      '<button class="btn btn-primary" id="seller-done">Done</button>' +
+    '</div>';
+  document.getElementById('seller-qr-file').addEventListener('change', function(e){
+    const file = e.target.files && e.target.files[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      try{ localStorage.setItem(QR_KEY, ev.target.result); }catch(e){}
+      buildCheatPrint();
+      sellerRenderUnlocked();
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('seller-remove-qr').addEventListener('click', function(){
+    try{ localStorage.removeItem(QR_KEY); }catch(e){}
+    buildCheatPrint();
+    sellerRenderUnlocked();
+  });
+  document.getElementById('seller-change-pin').addEventListener('click', function(){
+    try{ localStorage.removeItem(QR_PIN_KEY); }catch(e){}
+    sellerRenderLocked();
+  });
+  document.getElementById('seller-done').addEventListener('click', ()=>closeModal('modal-seller'));
+}
+document.getElementById('btn-seller').addEventListener('click', function(){ sellerRenderLocked(); openModal('modal-seller'); });
+
+const MODULES = [
+  {a:'0–28 Days'},
+  {a:'1–12 Months'},
+  {a:'1–3 Years'},
+  {a:'3–6 Years'},
+  {a:'6–12 Years'},
+  {a:'13–18 Years'},
+  {a:'19–29 Years'},
+  {a:'30–44 Years'},
+  {a:'45–64 Years'},
+  {a:'65–79 Years'},
+  {a:'80–89 Years'},
+  {a:'90+ Years'}
+];
+const MODULE_ICON_IX = [0,0,1,2,3,4,5,6,6,7,7,7];
+const SITUATION_MODULES = [
+  {name:'Pregnancy', sub:'Stage 0', status:'available', emoji:'🤰'},
+  {name:'Postpartum Recovery', sub:'Situation Module', status:'available', emoji:'🌷'},
+  {name:'Grandparent-Proofing', sub:'Situation Module', status:'available', emoji:'👵'},
+  {name:'Autism & Neurodivergent Children', sub:'Situation Module', status:'available', emoji:'♾️'},
+  {name:'Emergency Preparedness', sub:'Situation Module', status:'available', emoji:'🧳'},
+  {name:'Twins & Multiples', sub:'Situation Module', status:'available', emoji:'👯'},
+  {name:'Babysitter/Nanny Handover', sub:'Situation Module', status:'available', emoji:'🗒️'},
+  {name:'Dementia & Alzheimer\'s Care', sub:'Situation Module', status:'available', emoji:'🏠'},
+  {name:'Injury & Post-Surgery Recovery', sub:'Situation Module', status:'current', emoji:'🩹'},
+  {name:'Chronic Conditions Household', sub:'Coming Soon', status:'available', emoji:'💊'},
+  {name:'Limited Mobility / Wheelchair', sub:'Coming Soon', status:'available', emoji:'♿'},
+  {name:'Visually / Hearing Impaired', sub:'Situation Module', status:'available', emoji:'🔔'},
+  {name:'New Pet + Baby Household', sub:'Coming Soon', status:'coming', emoji:'🐾'},
+  {name:'The Caregiver\'s Own Safety', sub:'Coming Soon', status:'coming', emoji:'🤲'},
+  {name:'New Home Move-In Audit', sub:'Coming Soon', status:'coming', emoji:'🏡'},
+  {name:'Farm & Rural Household', sub:'Coming Soon', status:'coming', emoji:'🚜'},
+  {name:'Home Office / WFH', sub:'Coming Soon', status:'coming', emoji:'💻'}
+];
+function buildSituationGrid(){
+  const grid = document.getElementById('situation-grid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  SITUATION_MODULES.forEach(m=>{
+    const card = document.createElement('div');
+    card.className = 'module-card';
+    const tagClass = m.status === 'coming' ? 'coming' : (m.status === 'current' ? 'owned' : 'addon');
+    const tagLabel = m.status === 'coming' ? 'Coming Soon' : (m.status === 'current' ? '✓ Current Module' : 'Available Separately');
+    card.innerHTML = '<span class="m-emoji">' + m.emoji + '</span><span class="m-name">' + m.name + '</span><span class="m-age">' + m.sub + '</span>' +
+      '<span class="module-tag ' + tagClass + '">' + tagLabel + '</span>';
+    grid.appendChild(card);
+  });
+}
+
+function buildCollection(){
+  const grid = document.getElementById('collection-grid');
+  grid.innerHTML = '';
+  MODULES.forEach((m, mi)=>{
+    const card = document.createElement('div');
+    card.className = 'module-card';
+    const iconIx = MODULE_ICON_IX[mi] != null ? MODULE_ICON_IX[mi] : mi;
+    card.innerHTML = '<span class="m-emoji">' + ICONS.stages[iconIx] + '</span><span class="m-name">' + t('mn'+(mi+1)) + '</span><span class="m-age">' + m.a + '</span>' +
+      '<span class="module-tag ' + (m.owned ? 'owned' : 'addon') + '">' + (m.owned ? t('owned') : t('addon')) + '</span>';
+    grid.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+restore();
+injectIcons();
+document.body.dataset.theme = theme;
+document.body.dataset.mode = mode;
+document.getElementById('btn-mode').textContent = mode === 'light' ? '🌙' : '☀️';
+applyLang();
+fillStats();
+renderAll();
+buildThemeMenu();
+buildLangMenu();
+buildManual();
+buildCheat();
+buildCollection();
+buildSituationGrid();
+</script>
+</body>
+</html>
