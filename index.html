@@ -1607,7 +1607,7 @@ document.getElementById('btn-mode').addEventListener('click', function(){
 // SAVE / LOAD PROGRESS
 // ═══════════════════════════════════════════
 document.getElementById('btn-save').addEventListener('click', ()=>{
-  const data = { product:'SafeLife', module:'injury-recovery', version:1, savedAt:new Date().toISOString(), completed:[...completed], lang, mode };
+  const data = { product:'SafeLife', module:'injury-recovery', version:1, savedAt:new Date().toISOString(), completed:[...completed], lang, mode, contacts };
   const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -1630,6 +1630,7 @@ document.getElementById('load-file').addEventListener('change', function(){
       document.body.dataset.mode = mode;
       document.getElementById('btn-mode').textContent = mode === 'light' ? '🌙' : '☀️';
       applyLang(); renderAll(); buildLangMenu(); persist();
+      if(d.contacts && Array.isArray(d.contacts.list)){ contacts = d.contacts; saveContacts(); buildCheat(); }
     }catch(e){ alert('Could not read that file - is it a SafeLife progress file?'); }
   };
   reader.readAsText(file);
@@ -1979,5 +1980,97 @@ buildCheat();
 buildCollection();
 buildSituationGrid();
 </script>
+<script>
+// Keep every open tab in step, so an older tab can never overwrite newer information
+window.addEventListener('storage', function(e){
+  try{
+    if(e.key === STORE_KEY){ completed.clear(); restore(); document.body.dataset.mode = mode; document.getElementById('btn-mode').textContent = mode === 'light' ? '\u{1F319}' : '\u2600\uFE0F'; renderAll(); }
+    else if(e.key === CONTACTS_KEY && e.newValue){ var c = JSON.parse(e.newValue); if(c && Array.isArray(c.list)){ contacts = c; buildCheat(); } }
+  }catch(x){}
+});
+window.TST_SAFE={id:'ycaweihr',accent:'#4A7A88',backup:function(){document.getElementById('btn-save').click()},restore:function(){document.getElementById('load-file').click()}};
+</script>
+<!-- ===== The Snag Tag - Data Safety Notice (shared across all products) ===== -->
+<style>
+#tst-safe{position:fixed;inset:0;z-index:2147483000;background:rgba(30,24,16,.55);display:none;align-items:center;justify-content:center;padding:16px;font-family:Inter,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+#tst-safe.on{display:flex}
+#tst-safe .box{background:#fffdf8;color:#2c2a25;max-width:560px;width:100%;max-height:92vh;overflow:auto;border-radius:16px;border:1px solid #e6dccb;box-shadow:0 20px 60px rgba(0,0,0,.3);padding:22px 22px 18px}
+#tst-safe h2{font-family:Georgia,serif;font-size:21px;margin:0 0 12px;color:var(--tst-accent,#8a5a35)}
+#tst-safe .big{font-size:22px;line-height:1.25;font-weight:900;text-transform:uppercase;letter-spacing:.01em;margin:0 0 8px;color:#2c2a25}
+#tst-safe .big span{color:var(--tst-accent,#8a5a35)}
+#tst-safe .btns{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 14px}
+#tst-safe button{font:inherit;font-size:14px;font-weight:700;border-radius:10px;padding:10px 14px;cursor:pointer;border:1px solid var(--tst-accent,#8a5a35)}
+#tst-safe .pri{background:var(--tst-accent,#8a5a35);color:#fff}
+#tst-safe .sec{background:#fff;color:var(--tst-accent,#8a5a35)}
+#tst-safe details{border-top:1px solid #eee4d4;padding:9px 0}
+#tst-safe summary{cursor:pointer;font-weight:700;font-size:15px}
+#tst-safe details p,#tst-safe details li{font-size:14px;line-height:1.5;margin:6px 0}
+#tst-safe ul{margin:4px 0 0;padding-left:20px}
+#tst-safe .persist{font-size:12.5px;color:#6b6558;margin:10px 0 0}
+#tst-safe label{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;font-weight:600;margin:14px 0 12px;cursor:pointer}
+#tst-safe label input{width:20px;height:20px;margin-top:1px;flex-shrink:0;accent-color:var(--tst-accent,#8a5a35)}
+#tst-safe .close{width:100%}
+</style>
+<div id="tst-safe" role="dialog" aria-modal="true" aria-labelledby="tst-safe-t">
+ <div class="box">
+  <h2 id="tst-safe-t">Before you start: how your information is saved</h2>
+  <p class="big">Your information is saved <span>on this device only</span>.</p>
+  <p class="big">Save a <span>backup file</span> regularly.</p>
+  <div class="btns">
+   <button type="button" class="pri" data-act="backup">Save a backup now</button>
+   <button type="button" class="sec" data-act="restore">Restore a backup</button>
+  </div>
+  <details><summary>Where is my information saved?</summary>
+   <p>Inside this browser, on this device. Nothing is sent to The Snag Tag or anyone else. That keeps it private, but it also means you are the only one who can keep a copy safe.</p></details>
+  <details><summary>Why could my information seem to disappear?</summary>
+   <ul>
+    <li>You open the tool in a different browser, a private/incognito window, or on another device.</li>
+    <li>You open a different copy of the tool (for example a downloaded file instead of your link).</li>
+    <li>Your browsing history or site data gets cleared.</li>
+    <li>Safari (iPhone, iPad and Mac) can delete saved information if you don't open the tool for about 7 days.</li>
+    <li>The tool is open in two tabs at the same time. Always use one tab.</li>
+   </ul></details>
+  <details><summary>How do I keep my information safe?</summary>
+   <ul>
+    <li>Press <b>Save a backup now</b> after every session where you change something.</li>
+    <li>Keep the backup file somewhere safe, like your cloud drive or a USB stick.</li>
+    <li>Always open the tool from the same link, in the same browser.</li>
+   </ul></details>
+  <details><summary>How do I get my information back, or use another device?</summary>
+   <p>Open the tool, press <b>Restore a backup</b> and choose your latest backup file. Everything comes back as it was when you saved it.</p></details>
+  <p class="persist" id="tst-safe-p"></p>
+  <label><input type="checkbox" id="tst-safe-ok"> I know and understand how my information is saved. Don't show this again.</label>
+  <button type="button" class="pri close" data-act="close">Continue</button>
+ </div>
+</div>
+<script>
+(function(){
+ var C = window.TST_SAFE || {};
+ var KEY = 'tst_safe_ack_' + (C.id || location.pathname);
+ var el = document.getElementById('tst-safe');
+ if (C.accent) el.style.setProperty('--tst-accent', C.accent);
+ function ack(){ try { return localStorage.getItem(KEY) === '1'; } catch(e){ return false; } }
+ function open(){ el.classList.add('on'); }
+ window.tstShowSafety = open;
+ el.addEventListener('click', function(e){
+  var a = e.target.getAttribute && e.target.getAttribute('data-act'); if (!a) return;
+  if (a === 'backup' && C.backup) C.backup();
+  if (a === 'restore' && C.restore) { el.classList.remove('on'); C.restore(); }
+  if (a === 'close') {
+   if (document.getElementById('tst-safe-ok').checked) { try { localStorage.setItem(KEY, '1'); } catch(e){} }
+   el.classList.remove('on');
+  }
+ });
+ var p = document.getElementById('tst-safe-p');
+ if (navigator.storage && navigator.storage.persist) {
+  navigator.storage.persist().then(function(ok){
+   p.textContent = ok ? 'Good news: this browser has agreed to keep your saved information permanently.' : 'This browser has not promised to keep your information permanently, so backups are extra important.';
+  }).catch(function(){});
+ }
+ if (!ack()) { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', open); else open(); }
+})();
+</script>
+<!-- ===== end Data Safety Notice ===== -->
+
 </body>
 </html>
